@@ -271,12 +271,7 @@ class Project:  # pylint: disable=too-many-instance-attributes
         errors_path.write_text(errors_template.render(), encoding=self.file_encoding)
 
         # Generate endpoints
-        api_dir = self.package_dir / "api"
-        api_dir.mkdir()
-        api_init_path = api_dir / "__init__.py"
-        api_init_template = self.env.get_template("api_init.py.jinja")
-        api_init_path.write_text(api_init_template.render(), encoding=self.file_encoding)
-
+        api_dir = self.package_dir
         endpoint_collections_by_tag = self.openapi.endpoint_collections_by_tag
         endpoint_template = self.env.get_template(
             "endpoint_module.py.jinja", globals={"isbool": lambda obj: obj.get_base_type_string() == "bool"}

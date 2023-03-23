@@ -99,7 +99,7 @@ def generate_operation_id(*, path: str, method: str) -> str:
     return f"{method}_{clean_path}"
 
 
-models_relative_prefix: str = "..."
+models_relative_prefix: str = ".."
 
 
 # pylint: disable=too-many-instance-attributes

@@ -421,9 +421,9 @@ class TestEndpoint:
         parse_multipart_body.assert_called_once_with(
             body=request_body, schemas=json_schemas, parent_name="name", config=config
         )
-        form_body.get_imports.assert_called_once_with(prefix="...")
-        json_body.get_imports.assert_called_once_with(prefix="...")
-        multipart_body.get_imports.assert_called_once_with(prefix="...")
+        form_body.get_imports.assert_called_once_with(prefix="..")
+        json_body.get_imports.assert_called_once_with(prefix="..")
+        multipart_body.get_imports.assert_called_once_with(prefix="..")
         assert endpoint.relative_imports == {"import_3", form_body_imports, json_body_imports, multipart_body_imports}
         assert endpoint.json_body == json_body
         assert endpoint.form_body == form_body
