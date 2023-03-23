@@ -1,6 +1,8 @@
-from typing import Any, Dict, List, Type, TypeVar
+from typing import Any, Dict, List, Type, TypeVar, Union
 
 import attr
+
+from ..types import UNSET, Unset
 
 T = TypeVar("T", bound="ModelWithBackslashInDescription")
 
@@ -9,22 +11,32 @@ T = TypeVar("T", bound="ModelWithBackslashInDescription")
 class ModelWithBackslashInDescription:
     r""" Description with special character: \
 
+        Attributes:
+            prop (Union[Unset, str]):
      """
 
+    prop: Union[Unset, str] = UNSET
     additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
+        prop = self.prop
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({})
+        if prop is not UNSET:
+            field_dict["prop"] = prop
 
         return field_dict
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
         d = src_dict.copy()
-        model_with_backslash_in_description = cls()
+        prop = d.pop("prop", UNSET)
+
+        model_with_backslash_in_description = cls(
+            prop=prop,
+        )
 
         model_with_backslash_in_description.additional_properties = d
         return model_with_backslash_in_description

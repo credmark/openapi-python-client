@@ -8,6 +8,7 @@ from openapi_python_client.parser.properties import (
     BooleanProperty,
     DateProperty,
     DateTimeProperty,
+    DictProperty,
     EnumProperty,
     FileProperty,
     IntProperty,
@@ -193,6 +194,19 @@ def date_property_factory() -> Callable[..., DateProperty]:
 
     return _factory
 
+@pytest.fixture
+def dict_property_factory() -> Callable[..., DictProperty]:
+    """
+    This fixture surfaces in the test as a function which manufactures StringProperties with defaults.
+
+    You can pass the same params into this as the StringProperty constructor to override defaults.
+    """
+
+    def _factory(**kwargs):
+        kwargs = _common_kwargs(kwargs)
+        return DictProperty(**kwargs)
+
+    return _factory
 
 @pytest.fixture
 def file_property_factory() -> Callable[..., FileProperty]:

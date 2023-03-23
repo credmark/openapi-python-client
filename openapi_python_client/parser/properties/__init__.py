@@ -177,6 +177,12 @@ class BooleanProperty(Property):
     }
     template: ClassVar[str] = "boolean_property.py.jinja"
 
+@attr.s(auto_attribs=True, frozen=True)
+class DictProperty(Property):
+    """A property of type Dict[str, Any]"""
+
+    _type_string: ClassVar[str] = "Dict[str, Any]"
+    _json_type_string: ClassVar[str] = "Dict[str, Any]"
 
 InnerProp = TypeVar("InnerProp", bound=Property)
 
@@ -695,6 +701,19 @@ def _property_from_data(
             config=config,
             process_properties=process_properties,
             roots=roots,
+        )
+    if data.type == oai.DataType.OBJECT and not data.allOf and not data.properties and not data.additionalProperties:
+        return (
+            DictProperty(
+                name=name,
+                default=data.default,
+                required=required,
+                nullable=data.nullable,
+                python_name=utils.PythonIdentifier(value=name, prefix=config.field_prefix),
+                description=data.description,
+                example=data.example,
+            ),
+            schemas,
         )
     if data.type == oai.DataType.OBJECT or data.allOf or (data.type is None and data.properties):
         return build_model_property(

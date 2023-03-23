@@ -1,28 +1,41 @@
-from typing import Any, Dict, List, Type, TypeVar
+from typing import Any, Dict, List, Type, TypeVar, Union
 
 import attr
+
+from ..types import UNSET, Unset
 
 T = TypeVar("T", bound="PostResponsesUnionsSimpleBeforeComplexResponse200AType1")
 
 
 @attr.s(auto_attribs=True)
 class PostResponsesUnionsSimpleBeforeComplexResponse200AType1:
-    """ """
+    """
+    Attributes:
+        prop (Union[Unset, str]):
+    """
 
+    prop: Union[Unset, str] = UNSET
     additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
+        prop = self.prop
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({})
+        if prop is not UNSET:
+            field_dict["prop"] = prop
 
         return field_dict
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
         d = src_dict.copy()
-        post_responses_unions_simple_before_complex_response_200a_type_1 = cls()
+        prop = d.pop("prop", UNSET)
+
+        post_responses_unions_simple_before_complex_response_200a_type_1 = cls(
+            prop=prop,
+        )
 
         post_responses_unions_simple_before_complex_response_200a_type_1.additional_properties = d
         return post_responses_unions_simple_before_complex_response_200a_type_1

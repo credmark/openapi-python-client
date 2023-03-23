@@ -770,7 +770,14 @@
                     "a": {
                       "oneOf": [
                         {"type": "string"},
-                        {"type": "object"}
+                        {
+                          "type": "object",
+                          "properties": {
+                            "prop" : {
+                              "type": "string"
+                            }
+                          }
+                        }
                       ]
                     }
                   }
@@ -1256,6 +1263,9 @@
           },
           "an_required_field": {
             "type": "string"
+          },
+          "a_simple_dict": {
+            "type": "object"
           }
         },
         "required": [
@@ -1676,7 +1686,12 @@
       },
       "FreeFormModel": {
         "title": "FreeFormModel",
-        "type": "object"
+        "type": "object",
+        "properties": {
+          "prop" : {
+            "type": "string"
+          }
+        }
       },
       "ModelWithAdditionalPropertiesInlined": {
         "type": "object",
@@ -1812,7 +1827,12 @@
       },
       "model_reference_doesnt_match": {
         "title": "ModelName",
-        "type": "object"
+        "type": "object",
+        "properties": {
+          "prop" : {
+            "type": "string"
+          }
+        }
       },
       "ModelWithPropertyRef": {
         "type": "object",
@@ -2128,14 +2148,29 @@
         "format": "byte"
       },
       "import":  {
-        "type": "object"
+        "type": "object",
+        "properties": {
+          "prop" : {
+            "type": "string"
+          }
+        }
       },
       "None":  {
-        "type": "object"
+        "type": "object",
+        "properties": {
+          "prop" : {
+            "type": "string"
+          }
+        }
       },
       "model.reference.with.Periods": {
         "type": "object",
-        "description": "A Model with periods in its reference"
+        "description": "A Model with periods in its reference",
+        "properties": {
+          "prop" : {
+            "type": "string"
+          }
+        }
       },
       "ModelWithRecursiveRef": {
         "type": "object",
@@ -2241,7 +2276,12 @@
       },
       "ModelWithBackslashInDescription": {
         "type": "object",
-        "description": "Description with special character: \\"
+        "description": "Description with special character: \\",
+        "properties": {
+          "prop" : {
+            "type": "string"
+          }
+        }
       }
     },
     "parameters": {

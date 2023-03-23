@@ -389,7 +389,8 @@ class TestProcessProperties:
         from openapi_python_client.parser.properties.model_property import _process_properties
 
         roots = {"root"}
-        data = oai.Schema(properties={"test_model_property": oai.Schema.construct(type="object")})
+        data = oai.Schema(properties={"test_model_property": oai.Schema.construct(
+            type="object", properties={"test_model_nested_property": oai.Schema.construct(type="string")})})
 
         result = _process_properties(data=data, class_name="", schemas=Schemas(), config=Config(), roots=roots)
 

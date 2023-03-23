@@ -1,28 +1,41 @@
-from typing import Any, Dict, List, Type, TypeVar
+from typing import Any, Dict, List, Type, TypeVar, Union
 
 import attr
+
+from ..types import UNSET, Unset
 
 T = TypeVar("T", bound="None_")
 
 
 @attr.s(auto_attribs=True)
 class None_:
-    """ """
+    """
+    Attributes:
+        prop (Union[Unset, str]):
+    """
 
+    prop: Union[Unset, str] = UNSET
     additional_properties: Dict[str, Any] = attr.ib(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
+        prop = self.prop
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({})
+        if prop is not UNSET:
+            field_dict["prop"] = prop
 
         return field_dict
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
         d = src_dict.copy()
-        none = cls()
+        prop = d.pop("prop", UNSET)
+
+        none = cls(
+            prop=prop,
+        )
 
         none.additional_properties = d
         return none

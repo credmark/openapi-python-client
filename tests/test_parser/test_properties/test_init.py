@@ -763,43 +763,19 @@ class TestPropertyFromData:
             roots=roots,
         )
 
-    def test_property_from_data_object(self, mocker):
-        from openapi_python_client.parser.properties import Schemas, property_from_data
+    @pytest.mark.parametrize(
+        "required, nullable, expected",
+        (
+            (True, False, "Dict[str, Any]"),
+            (True, True, "Optional[Dict[str, Any]]"),
+            (False, True, "Union[Unset, None, Dict[str, Any]]"),
+            (False, False, "Union[Unset, Dict[str, Any]]"),
+        ),
+    )
+    def test_property_from_data_object(self, dict_property_factory, required, nullable, expected):
+        p = dict_property_factory(required=required, nullable=nullable)
 
-        name = mocker.MagicMock()
-        required = mocker.MagicMock()
-        data = oai.Schema(
-            type="object",
-        )
-        build_model_property = mocker.patch(f"{MODULE_NAME}.build_model_property")
-        mocker.patch("openapi_python_client.utils.remove_string_escapes", return_value=name)
-        schemas = Schemas()
-        config = MagicMock()
-        roots = {"root"}
-        process_properties = False
-
-        response = property_from_data(
-            name=name,
-            required=required,
-            data=data,
-            schemas=schemas,
-            parent_name="parent",
-            config=config,
-            process_properties=process_properties,
-            roots=roots,
-        )
-
-        assert response == build_model_property.return_value
-        build_model_property.assert_called_once_with(
-            data=data,
-            name=name,
-            required=required,
-            schemas=schemas,
-            parent_name="parent",
-            config=config,
-            process_properties=process_properties,
-            roots=roots,
-        )
+        assert p.get_type_string() == expected
 
     def test_property_from_data_union(self, mocker):
         from openapi_python_client.parser.properties import Schemas, property_from_data
