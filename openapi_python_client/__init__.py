@@ -232,16 +232,23 @@ class Project:  # pylint: disable=too-many-instance-attributes
         # Generate models
         models_dir = self.package_dir / "models"
         models_dir.mkdir()
+        docs_dir = self.package_dir / "docs"
+        docs_dir.mkdir(exist_ok=True)
         models_init = models_dir / "__init__.py"
         imports = []
         alls = []
 
         model_template = self.env.get_template("model.py.jinja")
+        model_doc_template = self.env.get_template("model.md.jinja")
         for model in self.openapi.models:
             module_path = models_dir / f"{model.class_info.module_name}.py"
             module_path.write_text(model_template.render(model=model), encoding=self.file_encoding)
             imports.append(import_string_from_class(model.class_info))
             alls.append(model.class_info.name)
+
+            # Generate model docs    
+            doc_path = docs_dir / f"{model.class_info.name}.md"
+            doc_path.write_text(model_doc_template.render(model=model), encoding=self.file_encoding)
 
         # Generate enums
         str_enum_template = self.env.get_template("str_enum.py.jinja")
@@ -270,11 +277,17 @@ class Project:  # pylint: disable=too-many-instance-attributes
         errors_template = self.env.get_template("errors.py.jinja")
         errors_path.write_text(errors_template.render(), encoding=self.file_encoding)
 
+        docs_dir = self.package_dir / "docs"
+        docs_dir.mkdir(exist_ok=True)
+
         # Generate endpoints
         api_dir = self.package_dir
         endpoint_collections_by_tag = self.openapi.endpoint_collections_by_tag
         endpoint_template = self.env.get_template(
             "endpoint_module.py.jinja", globals={"isbool": lambda obj: obj.get_base_type_string() == "bool"}
+        )
+        endpoints_doc_template = self.env.get_template(
+            "endpoints.md.jinja", globals={"isbool": lambda obj: obj.get_base_type_string() == "bool"}
         )
         for tag, collection in endpoint_collections_by_tag.items():
             tag_dir = api_dir / tag
@@ -286,15 +299,24 @@ class Project:  # pylint: disable=too-many-instance-attributes
                 endpoint_init_template.render(endpoint_collection=collection),
                 encoding=self.file_encoding,
             )
+            
+            def module_name(endpoint):
+                return utils.PythonIdentifier(endpoint.name, self.config.field_prefix)
 
             for endpoint in collection.endpoints:
-                module_path = tag_dir / f"{utils.PythonIdentifier(endpoint.name, self.config.field_prefix)}.py"
+                module_path = tag_dir / f"{module_name(endpoint)}.py"
                 module_path.write_text(
                     endpoint_template.render(
                         endpoint=endpoint,
                     ),
                     encoding=self.file_encoding,
                 )
+            
+            doc_path = docs_dir / f"{utils.ClassName(collection.title, '')}.md"
+            doc_path.write_text(
+                endpoints_doc_template.render(endpoint_collection=collection, module_name=module_name),
+                encoding=self.file_encoding
+            )
 
 
 def _get_project_for_url_or_path(  # pylint: disable=too-many-arguments

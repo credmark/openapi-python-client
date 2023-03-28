@@ -76,4 +76,4 @@ def regen_custom_template_golden_record():
 
 if __name__ == "__main__":
     regen_golden_record()
-    regen_custom_template_golden_record()
+    # regen_custom_template_golden_record()

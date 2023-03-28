@@ -1,0 +1,20 @@
+# {{ model.class_info.name }}
+
+{%- if model.description %}{{ model.description | wordwrap(120) }}
+
+{% endif %}
+
+{% if model.example %}
+### Example:
+{{ model.example | string | wordwrap(120) | indent(12) }}
+{% endif %}
+
+
+{% if model.required_properties or model.optional_properties %}
+## Properties
+Name | Type | Description
+------------ | ------------- | -------------
+{% for property in model.required_properties + model.optional_properties %}
+{{property.python_name}} | {{property.get_type_string()}} | {{property.description}}
+{% endfor %}{% endif %}
+

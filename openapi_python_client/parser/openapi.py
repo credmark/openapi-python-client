@@ -39,6 +39,7 @@ def import_string_from_class(class_: Class, prefix: str = "") -> str:
 class EndpointCollection:
     """A bunch of endpoints grouped under a tag that will become a module"""
 
+    title: str
     tag: str
     endpoints: List["Endpoint"] = field(default_factory=list)
     parse_errors: List[ParseError] = field(default_factory=list)
@@ -57,8 +58,9 @@ class EndpointCollection:
                 operation: Optional[oai.Operation] = getattr(path_data, method)
                 if operation is None:
                     continue
-                tag = utils.PythonIdentifier(value=(operation.tags or ["default"])[0], prefix="tag")
-                collection = endpoints_by_tag.setdefault(tag, EndpointCollection(tag=tag))
+                title = (operation.tags or ["default"])[0]
+                tag = utils.PythonIdentifier(value=title, prefix="tag")
+                collection = endpoints_by_tag.setdefault(tag, EndpointCollection(title=title, tag=tag))
                 endpoint, schemas, parameters = Endpoint.from_data(
                     data=operation,
                     path=path,
