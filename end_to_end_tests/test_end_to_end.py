@@ -92,11 +92,12 @@ def test_end_to_end():
 
 def test_custom_templates():
     expected_differences = {}  # key: path relative to generated directory, value: expected generated content
-    api_dir = Path("my_test_api_client")
+    api_dir = Path("my_test_api_client").joinpath("api")
     golden_tpls_root_dir = Path(__file__).parent.joinpath("custom-templates-golden-record")
 
     expected_difference_paths = [
         Path("README.md"),
+        api_dir.joinpath("__init__.py"),
     ]
 
     for expected_difference_path in expected_difference_paths:
