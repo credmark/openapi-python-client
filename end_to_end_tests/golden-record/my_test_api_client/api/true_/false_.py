@@ -1,18 +1,14 @@
 from http import HTTPStatus
-from typing import Any, Dict, Optional
+from typing import Any, Dict, Optional, Union
 
 import httpx
 
 from ... import errors
-from ...client import Client
-from ...types import UNSET, Response
+from ...client import MyTestApiClient
+from ...types import UNSET, Response, Unset
 
 
-def _get_kwargs(
-    *,
-    client: Client,
-    import_: str,
-) -> Dict[str, Any]:
+def _get_kwargs(*, import_: str, client: MyTestApiClient) -> Dict[str, Any]:
     url = "{}/naming/keywords".format(client.base_url)
 
     headers: Dict[str, str] = client.get_headers()
@@ -34,7 +30,7 @@ def _get_kwargs(
     }
 
 
-def _parse_response(*, client: Client, response: httpx.Response) -> Optional[Any]:
+def _parse_response(*, client: MyTestApiClient, response: httpx.Response) -> Optional[Any]:
     if response.status_code == HTTPStatus.OK:
         return None
     if client.raise_on_unexpected_status:
@@ -43,7 +39,7 @@ def _parse_response(*, client: Client, response: httpx.Response) -> Optional[Any
         return None
 
 
-def _build_response(*, client: Client, response: httpx.Response) -> Response[Any]:
+def _build_response(*, client: MyTestApiClient, response: httpx.Response) -> Response[Any]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -52,11 +48,7 @@ def _build_response(*, client: Client, response: httpx.Response) -> Response[Any
     )
 
 
-def sync_detailed(
-    *,
-    client: Client,
-    import_: str,
-) -> Response[Any]:
+def sync_detailed(*, import_: str, client: Union[MyTestApiClient, Unset] = UNSET) -> Response[Any]:
     """
     Args:
         import_ (str):
@@ -69,6 +61,7 @@ def sync_detailed(
         Response[Any]
     """
 
+    client = client if not isinstance(client, Unset) else MyTestApiClient.instance()
     kwargs = _get_kwargs(
         client=client,
         import_=import_,
@@ -82,11 +75,7 @@ def sync_detailed(
     return _build_response(client=client, response=response)
 
 
-async def asyncio_detailed(
-    *,
-    client: Client,
-    import_: str,
-) -> Response[Any]:
+async def asyncio_detailed(*, import_: str, client: Union[MyTestApiClient, Unset] = UNSET) -> Response[Any]:
     """
     Args:
         import_ (str):
@@ -99,6 +88,7 @@ async def asyncio_detailed(
         Response[Any]
     """
 
+    client = client if not isinstance(client, Unset) else MyTestApiClient.instance()
     kwargs = _get_kwargs(
         client=client,
         import_=import_,

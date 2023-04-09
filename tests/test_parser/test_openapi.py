@@ -1300,8 +1300,8 @@ class TestEndpointCollection:
         )
         assert result == (
             {
-                "default": EndpointCollection("default", endpoints=[endpoint_1, endpoint_3]),
-                "tag_2": EndpointCollection("tag_2", endpoints=[endpoint_2]),
+                "default": EndpointCollection(title="default", tag="default", endpoints=[endpoint_1, endpoint_3]),
+                "tag_2": EndpointCollection(title="tag_2", tag="tag_2", endpoints=[endpoint_2]),
             },
             schemas_3,
             parameters_3,
@@ -1473,11 +1473,11 @@ class TestEndpointCollection:
         )
         assert result == (
             {
-                "default": EndpointCollection("default", endpoints=[endpoint_1]),
+                "default": EndpointCollection(title="default", tag="default", endpoints=[endpoint_1]),
                 "amf_subscription_info_document": EndpointCollection(
-                    "amf_subscription_info_document", endpoints=[endpoint_2]
+                    title="AMF Subscription Info (Document)", tag="amf_subscription_info_document", endpoints=[endpoint_2]
                 ),
-                "tag3_abc": EndpointCollection("tag3_abc", endpoints=[endpoint_3]),
+                "tag3_abc": EndpointCollection(title="3. ABC", tag="tag3_abc", endpoints=[endpoint_3]),
             },
             schemas_3,
             parameters_3,

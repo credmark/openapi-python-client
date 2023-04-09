@@ -1,0 +1,9 @@
+from .api.default import get_common_parameters as __get_common_parameters
+from .api.default import post_common_parameters as __post_common_parameters
+
+get_common_parameters = __get_common_parameters.sync_detailed
+get_common_parameters_async = __get_common_parameters.asyncio_detailed
+
+
+post_common_parameters = __post_common_parameters.sync_detailed
+post_common_parameters_async = __post_common_parameters.asyncio_detailed

@@ -1,18 +1,15 @@
 from http import HTTPStatus
 from io import BytesIO
-from typing import Any, Dict, Optional
+from typing import Any, Dict, Optional, Union
 
 import httpx
 
 from ... import errors
-from ...client import Client
-from ...types import File, Response
+from ...client import MyTestApiClient
+from ...types import UNSET, File, Response, Unset
 
 
-def _get_kwargs(
-    *,
-    client: Client,
-) -> Dict[str, Any]:
+def _get_kwargs(*, client: MyTestApiClient) -> Dict[str, Any]:
     url = "{}/tests/octet_stream".format(client.base_url)
 
     headers: Dict[str, str] = client.get_headers()
@@ -28,7 +25,7 @@ def _get_kwargs(
     }
 
 
-def _parse_response(*, client: Client, response: httpx.Response) -> Optional[File]:
+def _parse_response(*, client: MyTestApiClient, response: httpx.Response) -> Optional[File]:
     if response.status_code == HTTPStatus.OK:
         response_200 = File(payload=BytesIO(response.content))
 
@@ -39,7 +36,7 @@ def _parse_response(*, client: Client, response: httpx.Response) -> Optional[Fil
         return None
 
 
-def _build_response(*, client: Client, response: httpx.Response) -> Response[File]:
+def _build_response(*, client: MyTestApiClient, response: httpx.Response) -> Response[File]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -48,10 +45,7 @@ def _build_response(*, client: Client, response: httpx.Response) -> Response[Fil
     )
 
 
-def sync_detailed(
-    *,
-    client: Client,
-) -> Response[File]:
+def sync_detailed(*, client: Union[MyTestApiClient, Unset] = UNSET) -> Response[File]:
     """Octet Stream
 
     Raises:
@@ -62,6 +56,7 @@ def sync_detailed(
         Response[File]
     """
 
+    client = client if not isinstance(client, Unset) else MyTestApiClient.instance()
     kwargs = _get_kwargs(
         client=client,
     )
@@ -74,10 +69,7 @@ def sync_detailed(
     return _build_response(client=client, response=response)
 
 
-def sync(
-    *,
-    client: Client,
-) -> Optional[File]:
+def sync(*, client: Union[MyTestApiClient, Unset] = UNSET) -> Optional[File]:
     """Octet Stream
 
     Raises:
@@ -93,10 +85,7 @@ def sync(
     ).parsed
 
 
-async def asyncio_detailed(
-    *,
-    client: Client,
-) -> Response[File]:
+async def asyncio_detailed(*, client: Union[MyTestApiClient, Unset] = UNSET) -> Response[File]:
     """Octet Stream
 
     Raises:
@@ -107,6 +96,7 @@ async def asyncio_detailed(
         Response[File]
     """
 
+    client = client if not isinstance(client, Unset) else MyTestApiClient.instance()
     kwargs = _get_kwargs(
         client=client,
     )
@@ -117,10 +107,7 @@ async def asyncio_detailed(
     return _build_response(client=client, response=response)
 
 
-async def asyncio(
-    *,
-    client: Client,
-) -> Optional[File]:
+async def asyncio(*, client: Union[MyTestApiClient, Unset] = UNSET) -> Optional[File]:
     """Octet Stream
 
     Raises:

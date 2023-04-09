@@ -1,17 +1,14 @@
 from http import HTTPStatus
-from typing import Any, Dict, Optional
+from typing import Any, Dict, Optional, Union
 
 import httpx
 
 from ... import errors
-from ...client import Client
-from ...types import Response
+from ...client import MyTestApiClient
+from ...types import UNSET, Response, Unset
 
 
-def _get_kwargs(
-    *,
-    client: Client,
-) -> Dict[str, Any]:
+def _get_kwargs(*, client: MyTestApiClient) -> Dict[str, Any]:
     url = "{}/tests/unsupported_content".format(client.base_url)
 
     headers: Dict[str, str] = client.get_headers()
@@ -27,7 +24,7 @@ def _get_kwargs(
     }
 
 
-def _parse_response(*, client: Client, response: httpx.Response) -> Optional[Any]:
+def _parse_response(*, client: MyTestApiClient, response: httpx.Response) -> Optional[Any]:
     if response.status_code == HTTPStatus.OK:
         return None
     if client.raise_on_unexpected_status:
@@ -36,7 +33,7 @@ def _parse_response(*, client: Client, response: httpx.Response) -> Optional[Any
         return None
 
 
-def _build_response(*, client: Client, response: httpx.Response) -> Response[Any]:
+def _build_response(*, client: MyTestApiClient, response: httpx.Response) -> Response[Any]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -45,10 +42,7 @@ def _build_response(*, client: Client, response: httpx.Response) -> Response[Any
     )
 
 
-def sync_detailed(
-    *,
-    client: Client,
-) -> Response[Any]:
+def sync_detailed(*, client: Union[MyTestApiClient, Unset] = UNSET) -> Response[Any]:
     """Unsupported Content
 
     Raises:
@@ -59,6 +53,7 @@ def sync_detailed(
         Response[Any]
     """
 
+    client = client if not isinstance(client, Unset) else MyTestApiClient.instance()
     kwargs = _get_kwargs(
         client=client,
     )
@@ -71,10 +66,7 @@ def sync_detailed(
     return _build_response(client=client, response=response)
 
 
-async def asyncio_detailed(
-    *,
-    client: Client,
-) -> Response[Any]:
+async def asyncio_detailed(*, client: Union[MyTestApiClient, Unset] = UNSET) -> Response[Any]:
     """Unsupported Content
 
     Raises:
@@ -85,6 +77,7 @@ async def asyncio_detailed(
         Response[Any]
     """
 
+    client = client if not isinstance(client, Unset) else MyTestApiClient.instance()
     kwargs = _get_kwargs(
         client=client,
     )

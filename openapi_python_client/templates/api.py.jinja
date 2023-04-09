@@ -1,0 +1,21 @@
+from .api.{{ endpoint_collection.tag }} import (
+{% for endpoint in endpoint_collection.endpoints %}
+{{ module_name(endpoint) }} as __{{ module_name(endpoint) }},
+{% endfor %}
+)
+
+
+{% for endpoint in endpoint_collection.endpoints %}
+{% set mod = module_name(endpoint) %}
+
+{% if (endpoint.responses | length > 0) and endpoint.response_type() != "Any" %}
+{{ mod }} = __{{ mod }}.sync
+{{ mod }}_detailed = __{{ mod }}.sync_detailed
+{{ mod }}_async = __{{ mod }}.asyncio
+{{ mod }}_async_detailed = __{{ mod }}.asyncio_detailed
+{% else %}
+{{ mod }} = __{{ mod }}.sync_detailed
+{{ mod }}_async = __{{ mod }}.asyncio_detailed
+{% endif %}
+
+{% endfor %}

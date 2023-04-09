@@ -1,20 +1,16 @@
 from http import HTTPStatus
-from typing import Any, Dict, Optional
+from typing import Any, Dict, Optional, Union
 
 import httpx
 
 from ... import errors
-from ...client import Client
+from ...client import MyTestApiClient
 from ...models.test_inline_objects_json_body import TestInlineObjectsJsonBody
 from ...models.test_inline_objects_response_200 import TestInlineObjectsResponse200
-from ...types import Response
+from ...types import UNSET, Response, Unset
 
 
-def _get_kwargs(
-    *,
-    client: Client,
-    json_body: TestInlineObjectsJsonBody,
-) -> Dict[str, Any]:
+def _get_kwargs(*, json_body: TestInlineObjectsJsonBody, client: MyTestApiClient) -> Dict[str, Any]:
     url = "{}/tests/inline_objects".format(client.base_url)
 
     headers: Dict[str, str] = client.get_headers()
@@ -33,7 +29,7 @@ def _get_kwargs(
     }
 
 
-def _parse_response(*, client: Client, response: httpx.Response) -> Optional[TestInlineObjectsResponse200]:
+def _parse_response(*, client: MyTestApiClient, response: httpx.Response) -> Optional[TestInlineObjectsResponse200]:
     if response.status_code == HTTPStatus.OK:
         response_200 = TestInlineObjectsResponse200.from_dict(response.json())
 
@@ -44,7 +40,7 @@ def _parse_response(*, client: Client, response: httpx.Response) -> Optional[Tes
         return None
 
 
-def _build_response(*, client: Client, response: httpx.Response) -> Response[TestInlineObjectsResponse200]:
+def _build_response(*, client: MyTestApiClient, response: httpx.Response) -> Response[TestInlineObjectsResponse200]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -54,9 +50,7 @@ def _build_response(*, client: Client, response: httpx.Response) -> Response[Tes
 
 
 def sync_detailed(
-    *,
-    client: Client,
-    json_body: TestInlineObjectsJsonBody,
+    *, json_body: TestInlineObjectsJsonBody, client: Union[MyTestApiClient, Unset] = UNSET
 ) -> Response[TestInlineObjectsResponse200]:
     """Test Inline Objects
 
@@ -71,6 +65,7 @@ def sync_detailed(
         Response[TestInlineObjectsResponse200]
     """
 
+    client = client if not isinstance(client, Unset) else MyTestApiClient.instance()
     kwargs = _get_kwargs(
         client=client,
         json_body=json_body,
@@ -85,9 +80,7 @@ def sync_detailed(
 
 
 def sync(
-    *,
-    client: Client,
-    json_body: TestInlineObjectsJsonBody,
+    *, json_body: TestInlineObjectsJsonBody, client: Union[MyTestApiClient, Unset] = UNSET
 ) -> Optional[TestInlineObjectsResponse200]:
     """Test Inline Objects
 
@@ -109,9 +102,7 @@ def sync(
 
 
 async def asyncio_detailed(
-    *,
-    client: Client,
-    json_body: TestInlineObjectsJsonBody,
+    *, json_body: TestInlineObjectsJsonBody, client: Union[MyTestApiClient, Unset] = UNSET
 ) -> Response[TestInlineObjectsResponse200]:
     """Test Inline Objects
 
@@ -126,6 +117,7 @@ async def asyncio_detailed(
         Response[TestInlineObjectsResponse200]
     """
 
+    client = client if not isinstance(client, Unset) else MyTestApiClient.instance()
     kwargs = _get_kwargs(
         client=client,
         json_body=json_body,
@@ -138,9 +130,7 @@ async def asyncio_detailed(
 
 
 async def asyncio(
-    *,
-    client: Client,
-    json_body: TestInlineObjectsJsonBody,
+    *, json_body: TestInlineObjectsJsonBody, client: Union[MyTestApiClient, Unset] = UNSET
 ) -> Optional[TestInlineObjectsResponse200]:
     """Test Inline Objects
 

@@ -5,21 +5,21 @@ from typing import Any, Dict, List, Optional, Union
 import httpx
 
 from ... import errors
-from ...client import Client
+from ...client import MyTestApiClient
 from ...models.a_model import AModel
 from ...models.an_enum import AnEnum
 from ...models.an_enum_with_null import AnEnumWithNull
 from ...models.http_validation_error import HTTPValidationError
-from ...types import UNSET, Response
+from ...types import UNSET, Response, Unset
 
 
 def _get_kwargs(
     *,
-    client: Client,
     an_enum_value: List[AnEnum],
     an_enum_value_with_null: List[Optional[AnEnumWithNull]],
     an_enum_value_with_only_null: List[None],
     some_date: Union[datetime.date, datetime.datetime],
+    client: MyTestApiClient,
 ) -> Dict[str, Any]:
     url = "{}/tests/".format(client.base_url)
 
@@ -72,7 +72,7 @@ def _get_kwargs(
 
 
 def _parse_response(
-    *, client: Client, response: httpx.Response
+    *, client: MyTestApiClient, response: httpx.Response
 ) -> Optional[Union[HTTPValidationError, List["AModel"]]]:
     if response.status_code == HTTPStatus.OK:
         response_200 = []
@@ -98,7 +98,7 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Client, response: httpx.Response
+    *, client: MyTestApiClient, response: httpx.Response
 ) -> Response[Union[HTTPValidationError, List["AModel"]]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
@@ -110,11 +110,11 @@ def _build_response(
 
 def sync_detailed(
     *,
-    client: Client,
     an_enum_value: List[AnEnum],
     an_enum_value_with_null: List[Optional[AnEnumWithNull]],
     an_enum_value_with_only_null: List[None],
     some_date: Union[datetime.date, datetime.datetime],
+    client: Union[MyTestApiClient, Unset] = UNSET,
 ) -> Response[Union[HTTPValidationError, List["AModel"]]]:
     """Get List
 
@@ -134,6 +134,7 @@ def sync_detailed(
         Response[Union[HTTPValidationError, List['AModel']]]
     """
 
+    client = client if not isinstance(client, Unset) else MyTestApiClient.instance()
     kwargs = _get_kwargs(
         client=client,
         an_enum_value=an_enum_value,
@@ -152,11 +153,11 @@ def sync_detailed(
 
 def sync(
     *,
-    client: Client,
     an_enum_value: List[AnEnum],
     an_enum_value_with_null: List[Optional[AnEnumWithNull]],
     an_enum_value_with_only_null: List[None],
     some_date: Union[datetime.date, datetime.datetime],
+    client: Union[MyTestApiClient, Unset] = UNSET,
 ) -> Optional[Union[HTTPValidationError, List["AModel"]]]:
     """Get List
 
@@ -187,11 +188,11 @@ def sync(
 
 async def asyncio_detailed(
     *,
-    client: Client,
     an_enum_value: List[AnEnum],
     an_enum_value_with_null: List[Optional[AnEnumWithNull]],
     an_enum_value_with_only_null: List[None],
     some_date: Union[datetime.date, datetime.datetime],
+    client: Union[MyTestApiClient, Unset] = UNSET,
 ) -> Response[Union[HTTPValidationError, List["AModel"]]]:
     """Get List
 
@@ -211,6 +212,7 @@ async def asyncio_detailed(
         Response[Union[HTTPValidationError, List['AModel']]]
     """
 
+    client = client if not isinstance(client, Unset) else MyTestApiClient.instance()
     kwargs = _get_kwargs(
         client=client,
         an_enum_value=an_enum_value,
@@ -227,11 +229,11 @@ async def asyncio_detailed(
 
 async def asyncio(
     *,
-    client: Client,
     an_enum_value: List[AnEnum],
     an_enum_value_with_null: List[Optional[AnEnumWithNull]],
     an_enum_value_with_only_null: List[None],
     some_date: Union[datetime.date, datetime.datetime],
+    client: Union[MyTestApiClient, Unset] = UNSET,
 ) -> Optional[Union[HTTPValidationError, List["AModel"]]]:
     """Get List
 

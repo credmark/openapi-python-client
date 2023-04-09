@@ -5,17 +5,17 @@ from typing import Any, Dict, Optional, Union
 import httpx
 
 from ... import errors
-from ...client import Client
+from ...client import MyTestApiClient
 from ...types import UNSET, Response, Unset
 
 
 def _get_kwargs(
     *,
-    client: Client,
     not_null_required: datetime.datetime,
     null_required: Union[Unset, None, datetime.datetime] = UNSET,
     null_not_required: Union[Unset, None, datetime.datetime] = UNSET,
     not_null_not_required: Union[Unset, None, datetime.datetime] = UNSET,
+    client: MyTestApiClient,
 ) -> Dict[str, Any]:
     url = "{}/location/query/optionality".format(client.base_url)
 
@@ -58,7 +58,7 @@ def _get_kwargs(
     }
 
 
-def _parse_response(*, client: Client, response: httpx.Response) -> Optional[Any]:
+def _parse_response(*, client: MyTestApiClient, response: httpx.Response) -> Optional[Any]:
     if response.status_code == HTTPStatus.OK:
         return None
     if client.raise_on_unexpected_status:
@@ -67,7 +67,7 @@ def _parse_response(*, client: Client, response: httpx.Response) -> Optional[Any
         return None
 
 
-def _build_response(*, client: Client, response: httpx.Response) -> Response[Any]:
+def _build_response(*, client: MyTestApiClient, response: httpx.Response) -> Response[Any]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -78,11 +78,11 @@ def _build_response(*, client: Client, response: httpx.Response) -> Response[Any
 
 def sync_detailed(
     *,
-    client: Client,
     not_null_required: datetime.datetime,
     null_required: Union[Unset, None, datetime.datetime] = UNSET,
     null_not_required: Union[Unset, None, datetime.datetime] = UNSET,
     not_null_not_required: Union[Unset, None, datetime.datetime] = UNSET,
+    client: Union[MyTestApiClient, Unset] = UNSET,
 ) -> Response[Any]:
     """
     Args:
@@ -99,6 +99,7 @@ def sync_detailed(
         Response[Any]
     """
 
+    client = client if not isinstance(client, Unset) else MyTestApiClient.instance()
     kwargs = _get_kwargs(
         client=client,
         not_null_required=not_null_required,
@@ -117,11 +118,11 @@ def sync_detailed(
 
 async def asyncio_detailed(
     *,
-    client: Client,
     not_null_required: datetime.datetime,
     null_required: Union[Unset, None, datetime.datetime] = UNSET,
     null_not_required: Union[Unset, None, datetime.datetime] = UNSET,
     not_null_not_required: Union[Unset, None, datetime.datetime] = UNSET,
+    client: Union[MyTestApiClient, Unset] = UNSET,
 ) -> Response[Any]:
     """
     Args:
@@ -138,6 +139,7 @@ async def asyncio_detailed(
         Response[Any]
     """
 
+    client = client if not isinstance(client, Unset) else MyTestApiClient.instance()
     kwargs = _get_kwargs(
         client=client,
         not_null_required=not_null_required,

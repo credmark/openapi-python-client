@@ -1,20 +1,17 @@
 from http import HTTPStatus
-from typing import Any, Dict, Optional
+from typing import Any, Dict, Optional, Union
 
 import httpx
 
 from ... import errors
-from ...client import Client
+from ...client import MyTestApiClient
 from ...models.post_responses_unions_simple_before_complex_response_200 import (
     PostResponsesUnionsSimpleBeforeComplexResponse200,
 )
-from ...types import Response
+from ...types import UNSET, Response, Unset
 
 
-def _get_kwargs(
-    *,
-    client: Client,
-) -> Dict[str, Any]:
+def _get_kwargs(*, client: MyTestApiClient) -> Dict[str, Any]:
     url = "{}/responses/unions/simple_before_complex".format(client.base_url)
 
     headers: Dict[str, str] = client.get_headers()
@@ -31,7 +28,7 @@ def _get_kwargs(
 
 
 def _parse_response(
-    *, client: Client, response: httpx.Response
+    *, client: MyTestApiClient, response: httpx.Response
 ) -> Optional[PostResponsesUnionsSimpleBeforeComplexResponse200]:
     if response.status_code == HTTPStatus.OK:
         response_200 = PostResponsesUnionsSimpleBeforeComplexResponse200.from_dict(response.json())
@@ -44,7 +41,7 @@ def _parse_response(
 
 
 def _build_response(
-    *, client: Client, response: httpx.Response
+    *, client: MyTestApiClient, response: httpx.Response
 ) -> Response[PostResponsesUnionsSimpleBeforeComplexResponse200]:
     return Response(
         status_code=HTTPStatus(response.status_code),
@@ -55,8 +52,7 @@ def _build_response(
 
 
 def sync_detailed(
-    *,
-    client: Client,
+    *, client: Union[MyTestApiClient, Unset] = UNSET
 ) -> Response[PostResponsesUnionsSimpleBeforeComplexResponse200]:
     """Regression test for #603
 
@@ -68,6 +64,7 @@ def sync_detailed(
         Response[PostResponsesUnionsSimpleBeforeComplexResponse200]
     """
 
+    client = client if not isinstance(client, Unset) else MyTestApiClient.instance()
     kwargs = _get_kwargs(
         client=client,
     )
@@ -81,8 +78,7 @@ def sync_detailed(
 
 
 def sync(
-    *,
-    client: Client,
+    *, client: Union[MyTestApiClient, Unset] = UNSET
 ) -> Optional[PostResponsesUnionsSimpleBeforeComplexResponse200]:
     """Regression test for #603
 
@@ -100,8 +96,7 @@ def sync(
 
 
 async def asyncio_detailed(
-    *,
-    client: Client,
+    *, client: Union[MyTestApiClient, Unset] = UNSET
 ) -> Response[PostResponsesUnionsSimpleBeforeComplexResponse200]:
     """Regression test for #603
 
@@ -113,6 +108,7 @@ async def asyncio_detailed(
         Response[PostResponsesUnionsSimpleBeforeComplexResponse200]
     """
 
+    client = client if not isinstance(client, Unset) else MyTestApiClient.instance()
     kwargs = _get_kwargs(
         client=client,
     )
@@ -124,8 +120,7 @@ async def asyncio_detailed(
 
 
 async def asyncio(
-    *,
-    client: Client,
+    *, client: Union[MyTestApiClient, Unset] = UNSET
 ) -> Optional[PostResponsesUnionsSimpleBeforeComplexResponse200]:
     """Regression test for #603
 

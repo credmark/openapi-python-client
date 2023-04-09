@@ -1,0 +1,4 @@
+from .api.parameter_references import get_parameter_references_path_param as __get_parameter_references_path_param
+
+get_parameter_references_path_param = __get_parameter_references_path_param.sync_detailed
+get_parameter_references_path_param_async = __get_parameter_references_path_param.asyncio_detailed

@@ -3,8 +3,8 @@ from typing import Any, Dict, List, Optional, Union, cast
 
 import httpx
 
-from ...client import AuthenticatedClient, Client
-from ...types import Response, UNSET
+from ...client import {{ client_name }}
+from ...types import Response, UNSET, Unset
 from ... import errors
 
 {% for relative in endpoint.relative_imports %}
@@ -19,6 +19,7 @@ from ... import errors
 
 def _get_kwargs(
     {{ arguments(endpoint) | indent(4) }}
+    client: {{ client_name }}
 ) -> Dict[str, Any]:
     url = "{}{{ endpoint.path }}".format(
         client.base_url
@@ -60,7 +61,7 @@ def _get_kwargs(
     }
 
 
-def _parse_response(*, client: Client, response: httpx.Response) -> Optional[{{ return_string }}]:
+def _parse_response(*, client: {{ client_name }}, response: httpx.Response) -> Optional[{{ return_string }}]:
     {% for response in endpoint.responses %}
     if response.status_code == HTTPStatus.{{ response.status_code.name }}:
         {% if parsed_responses %}{% import "property_templates/" + response.prop.template as prop_template %}
@@ -80,7 +81,7 @@ def _parse_response(*, client: Client, response: httpx.Response) -> Optional[{{ 
         return None
 
 
-def _build_response(*, client: Client, response: httpx.Response) -> Response[{{ return_string }}]:
+def _build_response(*, client: {{ client_name }}, response: httpx.Response) -> Response[{{ return_string }}]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -91,9 +92,11 @@ def _build_response(*, client: Client, response: httpx.Response) -> Response[{{ 
 
 def sync_detailed(
     {{ arguments(endpoint) | indent(4) }}
+    client: Union[{{ client_name }}, Unset] = UNSET
 ) -> Response[{{ return_string }}]:
     {{ docstring(endpoint, return_string) | indent(4) }}
 
+    client = client if not isinstance(client, Unset) else {{ client_name }}.instance()
     kwargs = _get_kwargs(
         {{ kwargs(endpoint) }}
     )
@@ -108,6 +111,7 @@ def sync_detailed(
 {% if parsed_responses %}
 def sync(
     {{ arguments(endpoint) | indent(4) }}
+    client: Union[{{ client_name }}, Unset] = UNSET
 ) -> Optional[{{ return_string }}]:
     {{ docstring(endpoint, return_string) | indent(4) }}
 
@@ -118,9 +122,11 @@ def sync(
 
 async def asyncio_detailed(
     {{ arguments(endpoint) | indent(4) }}
+    client: Union[{{ client_name }}, Unset] = UNSET
 ) -> Response[{{ return_string }}]:
     {{ docstring(endpoint, return_string) | indent(4) }}
 
+    client = client if not isinstance(client, Unset) else {{ client_name }}.instance()
     kwargs = _get_kwargs(
         {{ kwargs(endpoint) }}
     )
@@ -135,6 +141,7 @@ async def asyncio_detailed(
 {% if parsed_responses %}
 async def asyncio(
     {{ arguments(endpoint) | indent(4) }}
+    client: Union[{{ client_name }}, Unset] = UNSET
 ) -> Optional[{{ return_string }}]:
     {{ docstring(endpoint, return_string) | indent(4) }}
 

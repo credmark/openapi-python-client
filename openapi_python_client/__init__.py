@@ -87,6 +87,7 @@ class Project:  # pylint: disable=too-many-instance-attributes
             self.project_dir /= self.project_name
 
         self.package_name: str = config.package_name_override or self.project_name.replace("-", "_")
+        self.client_name: str = utils.ClassName(self.package_name, config.field_prefix)
         self.package_dir: Path = self.project_dir / self.package_name
         self.package_description: str = utils.remove_string_escapes(
             f"A client library for accessing {self.openapi.title}"
@@ -99,6 +100,7 @@ class Project:  # pylint: disable=too-many-instance-attributes
             python_identifier=lambda x: utils.PythonIdentifier(x, config.field_prefix),
             class_name=lambda x: utils.ClassName(x, config.field_prefix),
             package_name=self.package_name,
+            client_name=self.client_name,
             package_dir=self.package_dir,
             package_description=self.package_description,
             package_version=self.version,
@@ -291,8 +293,11 @@ class Project:  # pylint: disable=too-many-instance-attributes
         endpoint_template = self.env.get_template(
             "endpoint_module.py.jinja", globals={"isbool": lambda obj: obj.get_base_type_string() == "bool"}
         )
-        endpoints_doc_template = self.env.get_template(
-            "endpoints.md.jinja", globals={"isbool": lambda obj: obj.get_base_type_string() == "bool"}
+        api_template = self.env.get_template(
+            "api.py.jinja", globals={"isbool": lambda obj: obj.get_base_type_string() == "bool"}
+        )
+        api_doc_template = self.env.get_template(
+            "api.md.jinja", globals={"isbool": lambda obj: obj.get_base_type_string() == "bool"}
         )
         for tag, collection in endpoint_collections_by_tag.items():
             tag_dir = api_dir / tag
@@ -316,10 +321,16 @@ class Project:  # pylint: disable=too-many-instance-attributes
                     ),
                     encoding=self.file_encoding,
                 )
+
+            api_path = self.package_dir / f"{tag}.py"
+            api_path.write_text(
+                api_template.render(endpoint_collection=collection, module_name=module_name),
+                encoding=self.file_encoding
+            )
             
-            doc_path = docs_dir / f"{utils.ClassName(collection.title, '')}.md"
-            doc_path.write_text(
-                endpoints_doc_template.render(endpoint_collection=collection, module_name=module_name),
+            api_doc_path = docs_dir / f"{utils.ClassName(collection.title, '')}.md"
+            api_doc_path.write_text(
+                api_doc_template.render(endpoint_collection=collection, module_name=module_name),
                 encoding=self.file_encoding
             )
 

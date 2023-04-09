@@ -4,15 +4,11 @@ from typing import Any, Dict, Optional, Union
 import httpx
 
 from ... import errors
-from ...client import Client
+from ...client import MyTestApiClient
 from ...types import UNSET, Response, Unset
 
 
-def _get_kwargs(
-    *,
-    client: Client,
-    common: Union[Unset, None, str] = UNSET,
-) -> Dict[str, Any]:
+def _get_kwargs(*, common: Union[Unset, None, str] = UNSET, client: MyTestApiClient) -> Dict[str, Any]:
     url = "{}/common_parameters".format(client.base_url)
 
     headers: Dict[str, str] = client.get_headers()
@@ -34,7 +30,7 @@ def _get_kwargs(
     }
 
 
-def _parse_response(*, client: Client, response: httpx.Response) -> Optional[Any]:
+def _parse_response(*, client: MyTestApiClient, response: httpx.Response) -> Optional[Any]:
     if response.status_code == HTTPStatus.OK:
         return None
     if client.raise_on_unexpected_status:
@@ -43,7 +39,7 @@ def _parse_response(*, client: Client, response: httpx.Response) -> Optional[Any
         return None
 
 
-def _build_response(*, client: Client, response: httpx.Response) -> Response[Any]:
+def _build_response(*, client: MyTestApiClient, response: httpx.Response) -> Response[Any]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -53,9 +49,7 @@ def _build_response(*, client: Client, response: httpx.Response) -> Response[Any
 
 
 def sync_detailed(
-    *,
-    client: Client,
-    common: Union[Unset, None, str] = UNSET,
+    *, common: Union[Unset, None, str] = UNSET, client: Union[MyTestApiClient, Unset] = UNSET
 ) -> Response[Any]:
     """
     Args:
@@ -69,6 +63,7 @@ def sync_detailed(
         Response[Any]
     """
 
+    client = client if not isinstance(client, Unset) else MyTestApiClient.instance()
     kwargs = _get_kwargs(
         client=client,
         common=common,
@@ -83,9 +78,7 @@ def sync_detailed(
 
 
 async def asyncio_detailed(
-    *,
-    client: Client,
-    common: Union[Unset, None, str] = UNSET,
+    *, common: Union[Unset, None, str] = UNSET, client: Union[MyTestApiClient, Unset] = UNSET
 ) -> Response[Any]:
     """
     Args:
@@ -99,6 +92,7 @@ async def asyncio_detailed(
         Response[Any]
     """
 
+    client = client if not isinstance(client, Unset) else MyTestApiClient.instance()
     kwargs = _get_kwargs(
         client=client,
         common=common,

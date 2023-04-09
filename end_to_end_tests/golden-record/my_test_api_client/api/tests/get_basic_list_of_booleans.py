@@ -1,17 +1,14 @@
 from http import HTTPStatus
-from typing import Any, Dict, List, Optional, cast
+from typing import Any, Dict, List, Optional, Union, cast
 
 import httpx
 
 from ... import errors
-from ...client import Client
-from ...types import Response
+from ...client import MyTestApiClient
+from ...types import UNSET, Response, Unset
 
 
-def _get_kwargs(
-    *,
-    client: Client,
-) -> Dict[str, Any]:
+def _get_kwargs(*, client: MyTestApiClient) -> Dict[str, Any]:
     url = "{}/tests/basic_lists/booleans".format(client.base_url)
 
     headers: Dict[str, str] = client.get_headers()
@@ -27,7 +24,7 @@ def _get_kwargs(
     }
 
 
-def _parse_response(*, client: Client, response: httpx.Response) -> Optional[List[bool]]:
+def _parse_response(*, client: MyTestApiClient, response: httpx.Response) -> Optional[List[bool]]:
     if response.status_code == HTTPStatus.OK:
         response_200 = cast(List[bool], response.json())
 
@@ -38,7 +35,7 @@ def _parse_response(*, client: Client, response: httpx.Response) -> Optional[Lis
         return None
 
 
-def _build_response(*, client: Client, response: httpx.Response) -> Response[List[bool]]:
+def _build_response(*, client: MyTestApiClient, response: httpx.Response) -> Response[List[bool]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -47,10 +44,7 @@ def _build_response(*, client: Client, response: httpx.Response) -> Response[Lis
     )
 
 
-def sync_detailed(
-    *,
-    client: Client,
-) -> Response[List[bool]]:
+def sync_detailed(*, client: Union[MyTestApiClient, Unset] = UNSET) -> Response[List[bool]]:
     """Get Basic List Of Booleans
 
      Get a list of booleans
@@ -63,6 +57,7 @@ def sync_detailed(
         Response[List[bool]]
     """
 
+    client = client if not isinstance(client, Unset) else MyTestApiClient.instance()
     kwargs = _get_kwargs(
         client=client,
     )
@@ -75,10 +70,7 @@ def sync_detailed(
     return _build_response(client=client, response=response)
 
 
-def sync(
-    *,
-    client: Client,
-) -> Optional[List[bool]]:
+def sync(*, client: Union[MyTestApiClient, Unset] = UNSET) -> Optional[List[bool]]:
     """Get Basic List Of Booleans
 
      Get a list of booleans
@@ -96,10 +88,7 @@ def sync(
     ).parsed
 
 
-async def asyncio_detailed(
-    *,
-    client: Client,
-) -> Response[List[bool]]:
+async def asyncio_detailed(*, client: Union[MyTestApiClient, Unset] = UNSET) -> Response[List[bool]]:
     """Get Basic List Of Booleans
 
      Get a list of booleans
@@ -112,6 +101,7 @@ async def asyncio_detailed(
         Response[List[bool]]
     """
 
+    client = client if not isinstance(client, Unset) else MyTestApiClient.instance()
     kwargs = _get_kwargs(
         client=client,
     )
@@ -122,10 +112,7 @@ async def asyncio_detailed(
     return _build_response(client=client, response=response)
 
 
-async def asyncio(
-    *,
-    client: Client,
-) -> Optional[List[bool]]:
+async def asyncio(*, client: Union[MyTestApiClient, Unset] = UNSET) -> Optional[List[bool]]:
     """Get Basic List Of Booleans
 
      Get a list of booleans
