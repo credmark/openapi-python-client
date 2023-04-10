@@ -5,7 +5,7 @@ import types
 from . import {{ python_identifier(endpoint.name) }}
 {% endfor %}
 
-class {{ class_name(endpoint_collection.tag) }}Endpoints:
+class {{ endpoint_collection.tag.class_name }}Endpoints:
 
 {% for endpoint in endpoint_collection.endpoints %}
 

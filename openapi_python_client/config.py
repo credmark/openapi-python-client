@@ -17,6 +17,16 @@ class ClassOverride(BaseModel):
     module_name: Optional[str] = None
 
 
+class TagOverride(BaseModel):
+    """An override of a single generated class.
+
+    See https://github.com/openapi-generators/openapi-python-client#tag_overrides
+    """
+
+    class_name: Optional[str] = None
+    identifier_name: Optional[str] = None
+
+
 class Config(BaseModel):
     """Contains any configurable values passed by the user.
 
@@ -24,6 +34,7 @@ class Config(BaseModel):
     """
 
     class_overrides: Dict[str, ClassOverride] = {}
+    tag_overrides: Dict[str, TagOverride] = {}
     project_name_override: Optional[str]
     package_name_override: Optional[str]
     package_version_override: Optional[str]

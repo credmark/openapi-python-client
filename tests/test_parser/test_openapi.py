@@ -6,7 +6,7 @@ import pytest
 import openapi_python_client.schema as oai
 from openapi_python_client import Config, GeneratorError
 from openapi_python_client.parser.errors import ParseError
-from openapi_python_client.parser.openapi import Endpoint, EndpointCollection
+from openapi_python_client.parser.openapi import Endpoint, EndpointCollection, Tag
 from openapi_python_client.parser.properties import IntProperty, Parameters, Schemas
 from openapi_python_client.schema import ParameterLocation
 
@@ -1264,6 +1264,8 @@ class TestEndpointCollection:
         schemas = mocker.MagicMock()
         parameters = mocker.MagicMock()
         config = MagicMock()
+        tag_1 = Tag.from_string(string="default", config=config)
+        tag_2 = Tag.from_string(string="tag_2", config=config)
 
         result = EndpointCollection.from_data(data=data, schemas=schemas, parameters=parameters, config=config)
 
@@ -1273,7 +1275,7 @@ class TestEndpointCollection:
                     data=path_1_put,
                     path="path_1",
                     method="put",
-                    tag="default",
+                    tag=tag_1,
                     schemas=schemas,
                     parameters=parameters,
                     config=config,
@@ -1282,7 +1284,7 @@ class TestEndpointCollection:
                     data=path_1_post,
                     path="path_1",
                     method="post",
-                    tag="tag_2",
+                    tag=tag_2,
                     schemas=schemas_1,
                     parameters=parameters_1,
                     config=config,
@@ -1291,7 +1293,7 @@ class TestEndpointCollection:
                     data=path_2_get,
                     path="path_2",
                     method="get",
-                    tag="default",
+                    tag=tag_1,
                     schemas=schemas_2,
                     parameters=parameters_2,
                     config=config,
@@ -1300,8 +1302,8 @@ class TestEndpointCollection:
         )
         assert result == (
             {
-                "default": EndpointCollection(title="default", tag="default", endpoints=[endpoint_1, endpoint_3]),
-                "tag_2": EndpointCollection(title="tag_2", tag="tag_2", endpoints=[endpoint_2]),
+                "default": EndpointCollection(tag=tag_1, endpoints=[endpoint_1, endpoint_3]),
+                "tag_2": EndpointCollection(tag=tag_2, endpoints=[endpoint_2]),
             },
             schemas_3,
             parameters_3,
@@ -1363,6 +1365,8 @@ class TestEndpointCollection:
         schemas = mocker.MagicMock()
         parameters = mocker.MagicMock()
         config = MagicMock()
+        tag_1 = Tag.from_string(string="default", config=config)
+        tag_2 = Tag.from_string(string="tag_2", config=config)
 
         result, result_schemas, result_parameters = EndpointCollection.from_data(
             data=data, schemas=schemas, config=config, parameters=parameters
@@ -1374,7 +1378,7 @@ class TestEndpointCollection:
                     data=path_1_put,
                     path="path_1",
                     method="put",
-                    tag="default",
+                    tag=tag_1,
                     schemas=schemas,
                     parameters=parameters,
                     config=config,
@@ -1383,7 +1387,7 @@ class TestEndpointCollection:
                     data=path_1_post,
                     path="path_1",
                     method="post",
-                    tag="tag_2",
+                    tag=tag_2,
                     schemas=schemas_1,
                     parameters=parameters_1,
                     config=config,
@@ -1392,7 +1396,7 @@ class TestEndpointCollection:
                     data=path_2_get,
                     path="path_2",
                     method="get",
-                    tag="default",
+                    tag=tag_1,
                     schemas=schemas_2,
                     parameters=parameters_2,
                     config=config,
@@ -1437,6 +1441,9 @@ class TestEndpointCollection:
         schemas = mocker.MagicMock()
         parameters = mocker.MagicMock()
         config = MagicMock()
+        tag_1 = Tag.from_string(string="default", config=config)
+        tag_2 = Tag.from_string(string="AMF Subscription Info (Document)", config=config)
+        tag_3 = Tag.from_string(string="3. ABC", config=config)
 
         result = EndpointCollection.from_data(data=data, schemas=schemas, parameters=parameters, config=config)
 
@@ -1446,7 +1453,7 @@ class TestEndpointCollection:
                     data=path_1_put,
                     path="path_1",
                     method="put",
-                    tag="default",
+                    tag=tag_1,
                     schemas=schemas,
                     parameters=parameters,
                     config=config,
@@ -1455,7 +1462,7 @@ class TestEndpointCollection:
                     data=path_1_post,
                     path="path_1",
                     method="post",
-                    tag="amf_subscription_info_document",
+                    tag=tag_2,
                     schemas=schemas_1,
                     parameters=parameters_1,
                     config=config,
@@ -1464,7 +1471,7 @@ class TestEndpointCollection:
                     data=path_2_get,
                     path="path_2",
                     method="get",
-                    tag="tag3_abc",
+                    tag=tag_3,
                     schemas=schemas_2,
                     parameters=parameters_2,
                     config=config,
@@ -1473,11 +1480,10 @@ class TestEndpointCollection:
         )
         assert result == (
             {
-                "default": EndpointCollection(title="default", tag="default", endpoints=[endpoint_1]),
-                "amf_subscription_info_document": EndpointCollection(
-                    title="AMF Subscription Info (Document)", tag="amf_subscription_info_document", endpoints=[endpoint_2]
+                "default": EndpointCollection(tag=tag_1, endpoints=[endpoint_1]),
+                "amf_subscription_info_document": EndpointCollection(tag=tag_2, endpoints=[endpoint_2]
                 ),
-                "tag3_abc": EndpointCollection(title="3. ABC", tag="tag3_abc", endpoints=[endpoint_3]),
+                "tag3_abc": EndpointCollection(tag=tag_3, endpoints=[endpoint_3]),
             },
             schemas_3,
             parameters_3,

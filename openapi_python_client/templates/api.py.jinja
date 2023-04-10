@@ -1,4 +1,4 @@
-from .api.{{ endpoint_collection.tag }} import (
+from .api.{{ endpoint_collection.tag.identifier_name }} import (
 {% for endpoint in endpoint_collection.endpoints %}
 {{ module_name(endpoint) }} as __{{ module_name(endpoint) }},
 {% endfor %}

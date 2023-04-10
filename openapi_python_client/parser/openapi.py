@@ -11,7 +11,7 @@ from pydantic import ValidationError
 from .. import schema as oai
 from .. import utils
 from ..config import Config
-from ..utils import PythonIdentifier
+from ..utils import ClassName, PythonIdentifier
 from .errors import GeneratorError, ParseError, PropertyError
 from .properties import (
     Class,
@@ -39,8 +39,7 @@ def import_string_from_class(class_: Class, prefix: str = "") -> str:
 class EndpointCollection:
     """A bunch of endpoints grouped under a tag that will become a module"""
 
-    title: str
-    tag: str
+    tag: "Tag"
     endpoints: List["Endpoint"] = field(default_factory=list)
     parse_errors: List[ParseError] = field(default_factory=list)
 
@@ -58,9 +57,9 @@ class EndpointCollection:
                 operation: Optional[oai.Operation] = getattr(path_data, method)
                 if operation is None:
                     continue
-                title = (operation.tags or ["default"])[0]
-                tag = utils.PythonIdentifier(value=title, prefix="tag")
-                collection = endpoints_by_tag.setdefault(tag, EndpointCollection(title=title, tag=tag))
+                
+                tag = Tag.from_string(string=(operation.tags or ["default"])[0], config=config)
+                collection = endpoints_by_tag.setdefault(tag.identifier_name, EndpointCollection(tag=tag))
                 endpoint, schemas, parameters = Endpoint.from_data(
                     data=operation,
                     path=path,
@@ -585,3 +584,27 @@ class GeneratorData:
             errors=schemas.errors + parameters.errors,
             enums=enums,
         )
+
+
+@dataclass
+class Tag:
+    name: str
+    class_name: ClassName
+    identifier_name: PythonIdentifier
+
+    @staticmethod
+    def from_string(*, string: str, config: Config) -> "Tag":
+        """Get a Class from an arbitrary string"""
+        identifier_name = PythonIdentifier(string, "tag")
+        override = config.tag_overrides.get(string)
+        
+        if override is not None and isinstance(override.identifier_name, str):
+            identifier_name = override.identifier_name
+
+        if override is not None and isinstance(override.class_name, str):
+            class_name = override.class_name
+        else:
+            class_name = identifier_name
+        class_name = ClassName(class_name, "tag")
+
+        return Tag(name=string, class_name=class_name, identifier_name=identifier_name)

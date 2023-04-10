@@ -111,6 +111,21 @@ class_overrides:
     module_name: short_name
 ```
 
+### tag_overrides
+
+Used to change the name of tags. This param should be a mapping of existing tag name to class_name and identifier_name. 
+As an example, if the tag in OpenAPI was something like "Very Long Name" and you want the generated client's class names and 
+identifier names to be called "LongName" with identifier called "long_name" you could do this:
+
+Example:
+
+```yaml
+tag_overrides:
+  "Very Long Name":
+    class_name: LongName
+    identifier_name: long_name
+```
+
 The easiest way to find what needs to be overridden is probably to generate your client and go look at everything in the models folder.
 
 ### project_name_override and package_name_override

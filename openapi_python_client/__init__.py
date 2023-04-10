@@ -299,8 +299,9 @@ class Project:  # pylint: disable=too-many-instance-attributes
         api_doc_template = self.env.get_template(
             "api.md.jinja", globals={"isbool": lambda obj: obj.get_base_type_string() == "bool"}
         )
-        for tag, collection in endpoint_collections_by_tag.items():
-            tag_dir = api_dir / tag
+        for _, collection in endpoint_collections_by_tag.items():
+            tag = collection.tag
+            tag_dir = api_dir / tag.identifier_name
             tag_dir.mkdir()
 
             endpoint_init_path = tag_dir / "__init__.py"
@@ -322,13 +323,13 @@ class Project:  # pylint: disable=too-many-instance-attributes
                     encoding=self.file_encoding,
                 )
 
-            api_path = self.package_dir / f"{tag}.py"
+            api_path = self.package_dir / f"{tag.identifier_name}.py"
             api_path.write_text(
                 api_template.render(endpoint_collection=collection, module_name=module_name),
                 encoding=self.file_encoding
             )
             
-            api_doc_path = docs_dir / f"{utils.ClassName(collection.title, '')}.md"
+            api_doc_path = docs_dir / f"{tag.class_name}.md"
             api_doc_path.write_text(
                 api_doc_template.render(endpoint_collection=collection, module_name=module_name),
                 encoding=self.file_encoding
