@@ -1,15 +1,19 @@
 from http import HTTPStatus
-from typing import Any, Dict, Optional, Union
+from typing import TYPE_CHECKING, Any, Dict, Optional
 
 import httpx
 
+if TYPE_CHECKING:
+    from ...client import MyTestApiClient
+
+from typing import Dict
+
 from ... import errors
-from ...client import MyTestApiClient
 from ...models.a_form_data import AFormData
-from ...types import UNSET, Response, Unset
+from ...types import Response
 
 
-def _get_kwargs(*, form_data: AFormData, client: MyTestApiClient) -> Dict[str, Any]:
+def _get_kwargs(*, form_data: AFormData, client: "MyTestApiClient") -> Dict[str, Any]:
     url = "{}/tests/post_form_data".format(client.base_url)
 
     headers: Dict[str, str] = client.get_headers()
@@ -26,7 +30,7 @@ def _get_kwargs(*, form_data: AFormData, client: MyTestApiClient) -> Dict[str, A
     }
 
 
-def _parse_response(*, client: MyTestApiClient, response: httpx.Response) -> Optional[Any]:
+def _parse_response(*, client: "MyTestApiClient", response: httpx.Response) -> Optional[Any]:
     if response.status_code == HTTPStatus.OK:
         return None
     if client.raise_on_unexpected_status:
@@ -35,7 +39,7 @@ def _parse_response(*, client: MyTestApiClient, response: httpx.Response) -> Opt
         return None
 
 
-def _build_response(*, client: MyTestApiClient, response: httpx.Response) -> Response[Any]:
+def _build_response(*, client: "MyTestApiClient", response: httpx.Response) -> Response[Any]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -44,7 +48,7 @@ def _build_response(*, client: MyTestApiClient, response: httpx.Response) -> Res
     )
 
 
-def sync_detailed(*, form_data: AFormData, client: Union[MyTestApiClient, Unset] = UNSET) -> Response[Any]:
+def sync_detailed(*, form_data: AFormData, client: "MyTestApiClient") -> Response[Any]:
     """Post form data
 
      Post form data
@@ -57,7 +61,6 @@ def sync_detailed(*, form_data: AFormData, client: Union[MyTestApiClient, Unset]
         Response[Any]
     """
 
-    client = client if not isinstance(client, Unset) else MyTestApiClient.instance()
     kwargs = _get_kwargs(
         client=client,
         form_data=form_data,
@@ -71,7 +74,7 @@ def sync_detailed(*, form_data: AFormData, client: Union[MyTestApiClient, Unset]
     return _build_response(client=client, response=response)
 
 
-async def asyncio_detailed(*, form_data: AFormData, client: Union[MyTestApiClient, Unset] = UNSET) -> Response[Any]:
+def sync(*, form_data: AFormData, client: "MyTestApiClient") -> Optional[Any]:
     """Post form data
 
      Post form data
@@ -84,7 +87,25 @@ async def asyncio_detailed(*, form_data: AFormData, client: Union[MyTestApiClien
         Response[Any]
     """
 
-    client = client if not isinstance(client, Unset) else MyTestApiClient.instance()
+    return sync_detailed(
+        client=client,
+        form_data=form_data,
+    ).parsed
+
+
+async def asyncio_detailed(*, form_data: AFormData, client: "MyTestApiClient") -> Response[Any]:
+    """Post form data
+
+     Post form data
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        Response[Any]
+    """
+
     kwargs = _get_kwargs(
         client=client,
         form_data=form_data,
@@ -94,3 +115,24 @@ async def asyncio_detailed(*, form_data: AFormData, client: Union[MyTestApiClien
         response = await _client.request(**kwargs)
 
     return _build_response(client=client, response=response)
+
+
+async def asyncio(*, form_data: AFormData, client: "MyTestApiClient") -> Optional[Any]:
+    """Post form data
+
+     Post form data
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        Response[Any]
+    """
+
+    return (
+        await asyncio_detailed(
+            client=client,
+            form_data=form_data,
+        )
+    ).parsed

@@ -1,9 +1,0 @@
-from .api.location import get_location_header_types as __get_location_header_types
-from .api.location import get_location_query_optionality as __get_location_query_optionality
-
-get_location_query_optionality = __get_location_query_optionality.sync_detailed
-get_location_query_optionality_async = __get_location_query_optionality.asyncio_detailed
-
-
-get_location_header_types = __get_location_header_types.sync_detailed
-get_location_header_types_async = __get_location_header_types.asyncio_detailed

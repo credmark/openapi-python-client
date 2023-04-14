@@ -1,14 +1,18 @@
 from http import HTTPStatus
-from typing import Any, Dict, Optional, Union
+from typing import TYPE_CHECKING, Any, Dict, Optional
 
 import httpx
 
+if TYPE_CHECKING:
+    from ...client import MyTestApiClient
+
 from ... import errors
-from ...client import MyTestApiClient
-from ...types import UNSET, Response, Unset
+from ...types import UNSET, Response
 
 
-def _get_kwargs(param_path: str, *, param_query: str = "overridden_in_GET", client: MyTestApiClient) -> Dict[str, Any]:
+def _get_kwargs(
+    param_path: str, *, param_query: str = "overridden_in_GET", client: "MyTestApiClient"
+) -> Dict[str, Any]:
     url = "{}/common_parameters_overriding/{param}".format(client.base_url, param=param_path)
 
     headers: Dict[str, str] = client.get_headers()
@@ -30,7 +34,7 @@ def _get_kwargs(param_path: str, *, param_query: str = "overridden_in_GET", clie
     }
 
 
-def _parse_response(*, client: MyTestApiClient, response: httpx.Response) -> Optional[Any]:
+def _parse_response(*, client: "MyTestApiClient", response: httpx.Response) -> Optional[Any]:
     if response.status_code == HTTPStatus.OK:
         return None
     if client.raise_on_unexpected_status:
@@ -39,7 +43,7 @@ def _parse_response(*, client: MyTestApiClient, response: httpx.Response) -> Opt
         return None
 
 
-def _build_response(*, client: MyTestApiClient, response: httpx.Response) -> Response[Any]:
+def _build_response(*, client: "MyTestApiClient", response: httpx.Response) -> Response[Any]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -49,7 +53,7 @@ def _build_response(*, client: MyTestApiClient, response: httpx.Response) -> Res
 
 
 def sync_detailed(
-    param_path: str, *, param_query: str = "overridden_in_GET", client: Union[MyTestApiClient, Unset] = UNSET
+    param_path: str, *, param_query: str = "overridden_in_GET", client: "MyTestApiClient"
 ) -> Response[Any]:
     """Test that if you have an overriding property from `PathItem` in `Operation`, it produces valid code
 
@@ -66,7 +70,6 @@ def sync_detailed(
         Response[Any]
     """
 
-    client = client if not isinstance(client, Unset) else MyTestApiClient.instance()
     kwargs = _get_kwargs(
         param_path=param_path,
         client=client,
@@ -81,8 +84,31 @@ def sync_detailed(
     return _build_response(client=client, response=response)
 
 
+def sync(param_path: str, *, param_query: str = "overridden_in_GET", client: "MyTestApiClient") -> Optional[Any]:
+    """Test that if you have an overriding property from `PathItem` in `Operation`, it produces valid code
+
+    Args:
+        param_path (str):
+        param_query (str): A parameter with the same name as another. Default:
+            'overridden_in_GET'. Example: an example string.
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        Response[Any]
+    """
+
+    return sync_detailed(
+        param_path=param_path,
+        client=client,
+        param_query=param_query,
+    ).parsed
+
+
 async def asyncio_detailed(
-    param_path: str, *, param_query: str = "overridden_in_GET", client: Union[MyTestApiClient, Unset] = UNSET
+    param_path: str, *, param_query: str = "overridden_in_GET", client: "MyTestApiClient"
 ) -> Response[Any]:
     """Test that if you have an overriding property from `PathItem` in `Operation`, it produces valid code
 
@@ -99,7 +125,6 @@ async def asyncio_detailed(
         Response[Any]
     """
 
-    client = client if not isinstance(client, Unset) else MyTestApiClient.instance()
     kwargs = _get_kwargs(
         param_path=param_path,
         client=client,
@@ -110,3 +135,30 @@ async def asyncio_detailed(
         response = await _client.request(**kwargs)
 
     return _build_response(client=client, response=response)
+
+
+async def asyncio(
+    param_path: str, *, param_query: str = "overridden_in_GET", client: "MyTestApiClient"
+) -> Optional[Any]:
+    """Test that if you have an overriding property from `PathItem` in `Operation`, it produces valid code
+
+    Args:
+        param_path (str):
+        param_query (str): A parameter with the same name as another. Default:
+            'overridden_in_GET'. Example: an example string.
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        Response[Any]
+    """
+
+    return (
+        await asyncio_detailed(
+            param_path=param_path,
+            client=client,
+            param_query=param_query,
+        )
+    ).parsed

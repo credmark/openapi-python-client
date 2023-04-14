@@ -1,11 +1,15 @@
-import datetime
 from http import HTTPStatus
-from typing import Any, Dict, Optional, Union
+from typing import TYPE_CHECKING, Any, Dict, Optional, Union
 
 import httpx
 
+if TYPE_CHECKING:
+    from ...client import MyTestApiClient
+
+import datetime
+from typing import Optional, Union
+
 from ... import errors
-from ...client import MyTestApiClient
 from ...types import UNSET, Response, Unset
 
 
@@ -15,7 +19,7 @@ def _get_kwargs(
     null_required: Union[Unset, None, datetime.datetime] = UNSET,
     null_not_required: Union[Unset, None, datetime.datetime] = UNSET,
     not_null_not_required: Union[Unset, None, datetime.datetime] = UNSET,
-    client: MyTestApiClient,
+    client: "MyTestApiClient",
 ) -> Dict[str, Any]:
     url = "{}/location/query/optionality".format(client.base_url)
 
@@ -58,7 +62,7 @@ def _get_kwargs(
     }
 
 
-def _parse_response(*, client: MyTestApiClient, response: httpx.Response) -> Optional[Any]:
+def _parse_response(*, client: "MyTestApiClient", response: httpx.Response) -> Optional[Any]:
     if response.status_code == HTTPStatus.OK:
         return None
     if client.raise_on_unexpected_status:
@@ -67,7 +71,7 @@ def _parse_response(*, client: MyTestApiClient, response: httpx.Response) -> Opt
         return None
 
 
-def _build_response(*, client: MyTestApiClient, response: httpx.Response) -> Response[Any]:
+def _build_response(*, client: "MyTestApiClient", response: httpx.Response) -> Response[Any]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -82,7 +86,7 @@ def sync_detailed(
     null_required: Union[Unset, None, datetime.datetime] = UNSET,
     null_not_required: Union[Unset, None, datetime.datetime] = UNSET,
     not_null_not_required: Union[Unset, None, datetime.datetime] = UNSET,
-    client: Union[MyTestApiClient, Unset] = UNSET,
+    client: "MyTestApiClient",
 ) -> Response[Any]:
     """
     Args:
@@ -99,7 +103,6 @@ def sync_detailed(
         Response[Any]
     """
 
-    client = client if not isinstance(client, Unset) else MyTestApiClient.instance()
     kwargs = _get_kwargs(
         client=client,
         not_null_required=not_null_required,
@@ -116,13 +119,45 @@ def sync_detailed(
     return _build_response(client=client, response=response)
 
 
+def sync(
+    *,
+    not_null_required: datetime.datetime,
+    null_required: Union[Unset, None, datetime.datetime] = UNSET,
+    null_not_required: Union[Unset, None, datetime.datetime] = UNSET,
+    not_null_not_required: Union[Unset, None, datetime.datetime] = UNSET,
+    client: "MyTestApiClient",
+) -> Optional[Any]:
+    """
+    Args:
+        not_null_required (datetime.datetime):
+        null_required (Union[Unset, None, datetime.datetime]):
+        null_not_required (Union[Unset, None, datetime.datetime]):
+        not_null_not_required (Union[Unset, None, datetime.datetime]):
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        Response[Any]
+    """
+
+    return sync_detailed(
+        client=client,
+        not_null_required=not_null_required,
+        null_required=null_required,
+        null_not_required=null_not_required,
+        not_null_not_required=not_null_not_required,
+    ).parsed
+
+
 async def asyncio_detailed(
     *,
     not_null_required: datetime.datetime,
     null_required: Union[Unset, None, datetime.datetime] = UNSET,
     null_not_required: Union[Unset, None, datetime.datetime] = UNSET,
     not_null_not_required: Union[Unset, None, datetime.datetime] = UNSET,
-    client: Union[MyTestApiClient, Unset] = UNSET,
+    client: "MyTestApiClient",
 ) -> Response[Any]:
     """
     Args:
@@ -139,7 +174,6 @@ async def asyncio_detailed(
         Response[Any]
     """
 
-    client = client if not isinstance(client, Unset) else MyTestApiClient.instance()
     kwargs = _get_kwargs(
         client=client,
         not_null_required=not_null_required,
@@ -152,3 +186,37 @@ async def asyncio_detailed(
         response = await _client.request(**kwargs)
 
     return _build_response(client=client, response=response)
+
+
+async def asyncio(
+    *,
+    not_null_required: datetime.datetime,
+    null_required: Union[Unset, None, datetime.datetime] = UNSET,
+    null_not_required: Union[Unset, None, datetime.datetime] = UNSET,
+    not_null_not_required: Union[Unset, None, datetime.datetime] = UNSET,
+    client: "MyTestApiClient",
+) -> Optional[Any]:
+    """
+    Args:
+        not_null_required (datetime.datetime):
+        null_required (Union[Unset, None, datetime.datetime]):
+        null_not_required (Union[Unset, None, datetime.datetime]):
+        not_null_not_required (Union[Unset, None, datetime.datetime]):
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        Response[Any]
+    """
+
+    return (
+        await asyncio_detailed(
+            client=client,
+            not_null_required=not_null_required,
+            null_required=null_required,
+            null_not_required=null_not_required,
+            not_null_not_required=not_null_not_required,
+        )
+    ).parsed

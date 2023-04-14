@@ -83,7 +83,9 @@ params = {k: v for k, v in params.items() if v is not UNSET and v is not None}
 {% for parameter in endpoint.path_parameters.values() %}
 {{ parameter.to_string() }},
 {% endfor %}
+{% if endpoint.form_body or endpoint.multipart_body or endpoint.json_body or endpoint.query_parameters or endpoint.header_parameters or endpoint.cookie_parameters %}
 *,
+{% endif %}
 {# Form data if any #}
 {% if endpoint.form_body %}
 form_data: {{ endpoint.form_body.get_type_string() }},
@@ -110,11 +112,13 @@ json_body: {{ endpoint.json_body.get_type_string() }},
 {% endmacro %}
 
 {# Just lists all kwargs to endpoints as name=name for passing to other functions #}
-{% macro kwargs(endpoint) %}
+{% macro kwargs(endpoint, include_client=True) %}
 {% for parameter in endpoint.path_parameters.values() %}
 {{ parameter.python_name }}={{ parameter.python_name }},
 {% endfor %}
+{% if include_client %}
 client=client,
+{% endif %}
 {% if endpoint.form_body %}
 form_data=form_data,
 {% endif %}

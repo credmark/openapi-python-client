@@ -1,15 +1,19 @@
 from http import HTTPStatus
-from typing import Any, Dict, Optional, Union, cast
+from typing import TYPE_CHECKING, Any, Dict, Optional, Union, cast
 
 import httpx
 
+if TYPE_CHECKING:
+    from ...client import MyTestApiClient
+
+from typing import Dict, cast
+
 from ... import errors
-from ...client import MyTestApiClient
 from ...models.http_validation_error import HTTPValidationError
-from ...types import UNSET, Response, Unset
+from ...types import Response
 
 
-def _get_kwargs(*, json_body: str, client: MyTestApiClient) -> Dict[str, Any]:
+def _get_kwargs(*, json_body: str, client: "MyTestApiClient") -> Dict[str, Any]:
     url = "{}/tests/json_body/string".format(client.base_url)
 
     headers: Dict[str, str] = client.get_headers()
@@ -28,7 +32,9 @@ def _get_kwargs(*, json_body: str, client: MyTestApiClient) -> Dict[str, Any]:
     }
 
 
-def _parse_response(*, client: MyTestApiClient, response: httpx.Response) -> Optional[Union[HTTPValidationError, str]]:
+def _parse_response(
+    *, client: "MyTestApiClient", response: httpx.Response
+) -> Optional[Union[HTTPValidationError, str]]:
     if response.status_code == HTTPStatus.OK:
         response_200 = cast(str, response.json())
         return response_200
@@ -42,7 +48,9 @@ def _parse_response(*, client: MyTestApiClient, response: httpx.Response) -> Opt
         return None
 
 
-def _build_response(*, client: MyTestApiClient, response: httpx.Response) -> Response[Union[HTTPValidationError, str]]:
+def _build_response(
+    *, client: "MyTestApiClient", response: httpx.Response
+) -> Response[Union[HTTPValidationError, str]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -51,9 +59,7 @@ def _build_response(*, client: MyTestApiClient, response: httpx.Response) -> Res
     )
 
 
-def sync_detailed(
-    *, json_body: str, client: Union[MyTestApiClient, Unset] = UNSET
-) -> Response[Union[HTTPValidationError, str]]:
+def sync_detailed(*, json_body: str, client: "MyTestApiClient") -> Response[Union[HTTPValidationError, str]]:
     """Json Body Which is String
 
     Args:
@@ -67,7 +73,6 @@ def sync_detailed(
         Response[Union[HTTPValidationError, str]]
     """
 
-    client = client if not isinstance(client, Unset) else MyTestApiClient.instance()
     kwargs = _get_kwargs(
         client=client,
         json_body=json_body,
@@ -81,7 +86,7 @@ def sync_detailed(
     return _build_response(client=client, response=response)
 
 
-def sync(*, json_body: str, client: Union[MyTestApiClient, Unset] = UNSET) -> Optional[Union[HTTPValidationError, str]]:
+def sync(*, json_body: str, client: "MyTestApiClient") -> Optional[Union[HTTPValidationError, str]]:
     """Json Body Which is String
 
     Args:
@@ -101,9 +106,7 @@ def sync(*, json_body: str, client: Union[MyTestApiClient, Unset] = UNSET) -> Op
     ).parsed
 
 
-async def asyncio_detailed(
-    *, json_body: str, client: Union[MyTestApiClient, Unset] = UNSET
-) -> Response[Union[HTTPValidationError, str]]:
+async def asyncio_detailed(*, json_body: str, client: "MyTestApiClient") -> Response[Union[HTTPValidationError, str]]:
     """Json Body Which is String
 
     Args:
@@ -117,7 +120,6 @@ async def asyncio_detailed(
         Response[Union[HTTPValidationError, str]]
     """
 
-    client = client if not isinstance(client, Unset) else MyTestApiClient.instance()
     kwargs = _get_kwargs(
         client=client,
         json_body=json_body,
@@ -129,9 +131,7 @@ async def asyncio_detailed(
     return _build_response(client=client, response=response)
 
 
-async def asyncio(
-    *, json_body: str, client: Union[MyTestApiClient, Unset] = UNSET
-) -> Optional[Union[HTTPValidationError, str]]:
+async def asyncio(*, json_body: str, client: "MyTestApiClient") -> Optional[Union[HTTPValidationError, str]]:
     """Json Body Which is String
 
     Args:

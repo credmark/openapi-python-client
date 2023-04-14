@@ -1,15 +1,19 @@
 from http import HTTPStatus
-from typing import Any, Dict, List, Optional, Union, cast
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union, cast
 
 import httpx
 
+if TYPE_CHECKING:
+    from ...client import MyTestApiClient
+
+from typing import Dict, List, cast
+
 from ... import errors
-from ...client import MyTestApiClient
 from ...models.http_validation_error import HTTPValidationError
-from ...types import UNSET, File, Response, Unset
+from ...types import File, Response
 
 
-def _get_kwargs(*, multipart_data: List[File], client: MyTestApiClient) -> Dict[str, Any]:
+def _get_kwargs(*, multipart_data: List[File], client: "MyTestApiClient") -> Dict[str, Any]:
     url = "{}/tests/upload/multiple".format(client.base_url)
 
     headers: Dict[str, str] = client.get_headers()
@@ -32,7 +36,9 @@ def _get_kwargs(*, multipart_data: List[File], client: MyTestApiClient) -> Dict[
     }
 
 
-def _parse_response(*, client: MyTestApiClient, response: httpx.Response) -> Optional[Union[Any, HTTPValidationError]]:
+def _parse_response(
+    *, client: "MyTestApiClient", response: httpx.Response
+) -> Optional[Union[Any, HTTPValidationError]]:
     if response.status_code == HTTPStatus.OK:
         response_200 = cast(Any, response.json())
         return response_200
@@ -46,7 +52,9 @@ def _parse_response(*, client: MyTestApiClient, response: httpx.Response) -> Opt
         return None
 
 
-def _build_response(*, client: MyTestApiClient, response: httpx.Response) -> Response[Union[Any, HTTPValidationError]]:
+def _build_response(
+    *, client: "MyTestApiClient", response: httpx.Response
+) -> Response[Union[Any, HTTPValidationError]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -56,7 +64,7 @@ def _build_response(*, client: MyTestApiClient, response: httpx.Response) -> Res
 
 
 def sync_detailed(
-    *, multipart_data: List[File], client: Union[MyTestApiClient, Unset] = UNSET
+    *, multipart_data: List[File], client: "MyTestApiClient"
 ) -> Response[Union[Any, HTTPValidationError]]:
     """Upload multiple files
 
@@ -73,7 +81,6 @@ def sync_detailed(
         Response[Union[Any, HTTPValidationError]]
     """
 
-    client = client if not isinstance(client, Unset) else MyTestApiClient.instance()
     kwargs = _get_kwargs(
         client=client,
         multipart_data=multipart_data,
@@ -87,9 +94,7 @@ def sync_detailed(
     return _build_response(client=client, response=response)
 
 
-def sync(
-    *, multipart_data: List[File], client: Union[MyTestApiClient, Unset] = UNSET
-) -> Optional[Union[Any, HTTPValidationError]]:
+def sync(*, multipart_data: List[File], client: "MyTestApiClient") -> Optional[Union[Any, HTTPValidationError]]:
     """Upload multiple files
 
      Upload several files in the same request
@@ -112,7 +117,7 @@ def sync(
 
 
 async def asyncio_detailed(
-    *, multipart_data: List[File], client: Union[MyTestApiClient, Unset] = UNSET
+    *, multipart_data: List[File], client: "MyTestApiClient"
 ) -> Response[Union[Any, HTTPValidationError]]:
     """Upload multiple files
 
@@ -129,7 +134,6 @@ async def asyncio_detailed(
         Response[Union[Any, HTTPValidationError]]
     """
 
-    client = client if not isinstance(client, Unset) else MyTestApiClient.instance()
     kwargs = _get_kwargs(
         client=client,
         multipart_data=multipart_data,
@@ -142,7 +146,7 @@ async def asyncio_detailed(
 
 
 async def asyncio(
-    *, multipart_data: List[File], client: Union[MyTestApiClient, Unset] = UNSET
+    *, multipart_data: List[File], client: "MyTestApiClient"
 ) -> Optional[Union[Any, HTTPValidationError]]:
     """Upload multiple files
 

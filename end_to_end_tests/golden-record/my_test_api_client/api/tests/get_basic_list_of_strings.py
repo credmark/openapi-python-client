@@ -1,14 +1,18 @@
 from http import HTTPStatus
-from typing import Any, Dict, List, Optional, Union, cast
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, cast
 
 import httpx
 
+if TYPE_CHECKING:
+    from ...client import MyTestApiClient
+
+from typing import List, cast
+
 from ... import errors
-from ...client import MyTestApiClient
-from ...types import UNSET, Response, Unset
+from ...types import Response
 
 
-def _get_kwargs(*, client: MyTestApiClient) -> Dict[str, Any]:
+def _get_kwargs(client: "MyTestApiClient") -> Dict[str, Any]:
     url = "{}/tests/basic_lists/strings".format(client.base_url)
 
     headers: Dict[str, str] = client.get_headers()
@@ -24,7 +28,7 @@ def _get_kwargs(*, client: MyTestApiClient) -> Dict[str, Any]:
     }
 
 
-def _parse_response(*, client: MyTestApiClient, response: httpx.Response) -> Optional[List[str]]:
+def _parse_response(*, client: "MyTestApiClient", response: httpx.Response) -> Optional[List[str]]:
     if response.status_code == HTTPStatus.OK:
         response_200 = cast(List[str], response.json())
 
@@ -35,7 +39,7 @@ def _parse_response(*, client: MyTestApiClient, response: httpx.Response) -> Opt
         return None
 
 
-def _build_response(*, client: MyTestApiClient, response: httpx.Response) -> Response[List[str]]:
+def _build_response(*, client: "MyTestApiClient", response: httpx.Response) -> Response[List[str]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -44,7 +48,7 @@ def _build_response(*, client: MyTestApiClient, response: httpx.Response) -> Res
     )
 
 
-def sync_detailed(*, client: Union[MyTestApiClient, Unset] = UNSET) -> Response[List[str]]:
+def sync_detailed(client: "MyTestApiClient") -> Response[List[str]]:
     """Get Basic List Of Strings
 
      Get a list of strings
@@ -57,7 +61,6 @@ def sync_detailed(*, client: Union[MyTestApiClient, Unset] = UNSET) -> Response[
         Response[List[str]]
     """
 
-    client = client if not isinstance(client, Unset) else MyTestApiClient.instance()
     kwargs = _get_kwargs(
         client=client,
     )
@@ -70,7 +73,7 @@ def sync_detailed(*, client: Union[MyTestApiClient, Unset] = UNSET) -> Response[
     return _build_response(client=client, response=response)
 
 
-def sync(*, client: Union[MyTestApiClient, Unset] = UNSET) -> Optional[List[str]]:
+def sync(client: "MyTestApiClient") -> Optional[List[str]]:
     """Get Basic List Of Strings
 
      Get a list of strings
@@ -88,7 +91,7 @@ def sync(*, client: Union[MyTestApiClient, Unset] = UNSET) -> Optional[List[str]
     ).parsed
 
 
-async def asyncio_detailed(*, client: Union[MyTestApiClient, Unset] = UNSET) -> Response[List[str]]:
+async def asyncio_detailed(client: "MyTestApiClient") -> Response[List[str]]:
     """Get Basic List Of Strings
 
      Get a list of strings
@@ -101,7 +104,6 @@ async def asyncio_detailed(*, client: Union[MyTestApiClient, Unset] = UNSET) -> 
         Response[List[str]]
     """
 
-    client = client if not isinstance(client, Unset) else MyTestApiClient.instance()
     kwargs = _get_kwargs(
         client=client,
     )
@@ -112,7 +114,7 @@ async def asyncio_detailed(*, client: Union[MyTestApiClient, Unset] = UNSET) -> 
     return _build_response(client=client, response=response)
 
 
-async def asyncio(*, client: Union[MyTestApiClient, Unset] = UNSET) -> Optional[List[str]]:
+async def asyncio(client: "MyTestApiClient") -> Optional[List[str]]:
     """Get Basic List Of Strings
 
      Get a list of strings

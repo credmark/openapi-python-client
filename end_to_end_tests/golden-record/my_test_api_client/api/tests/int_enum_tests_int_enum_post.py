@@ -1,16 +1,20 @@
 from http import HTTPStatus
-from typing import Any, Dict, Optional, Union, cast
+from typing import TYPE_CHECKING, Any, Dict, Optional, Union, cast
 
 import httpx
 
+if TYPE_CHECKING:
+    from ...client import MyTestApiClient
+
+from typing import Dict, cast
+
 from ... import errors
-from ...client import MyTestApiClient
 from ...models.an_int_enum import AnIntEnum
 from ...models.http_validation_error import HTTPValidationError
-from ...types import UNSET, Response, Unset
+from ...types import UNSET, Response
 
 
-def _get_kwargs(*, int_enum: AnIntEnum, client: MyTestApiClient) -> Dict[str, Any]:
+def _get_kwargs(*, int_enum: AnIntEnum, client: "MyTestApiClient") -> Dict[str, Any]:
     url = "{}/tests/int_enum".format(client.base_url)
 
     headers: Dict[str, str] = client.get_headers()
@@ -34,7 +38,9 @@ def _get_kwargs(*, int_enum: AnIntEnum, client: MyTestApiClient) -> Dict[str, An
     }
 
 
-def _parse_response(*, client: MyTestApiClient, response: httpx.Response) -> Optional[Union[Any, HTTPValidationError]]:
+def _parse_response(
+    *, client: "MyTestApiClient", response: httpx.Response
+) -> Optional[Union[Any, HTTPValidationError]]:
     if response.status_code == HTTPStatus.OK:
         response_200 = cast(Any, response.json())
         return response_200
@@ -48,7 +54,9 @@ def _parse_response(*, client: MyTestApiClient, response: httpx.Response) -> Opt
         return None
 
 
-def _build_response(*, client: MyTestApiClient, response: httpx.Response) -> Response[Union[Any, HTTPValidationError]]:
+def _build_response(
+    *, client: "MyTestApiClient", response: httpx.Response
+) -> Response[Union[Any, HTTPValidationError]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -57,9 +65,7 @@ def _build_response(*, client: MyTestApiClient, response: httpx.Response) -> Res
     )
 
 
-def sync_detailed(
-    *, int_enum: AnIntEnum, client: Union[MyTestApiClient, Unset] = UNSET
-) -> Response[Union[Any, HTTPValidationError]]:
+def sync_detailed(*, int_enum: AnIntEnum, client: "MyTestApiClient") -> Response[Union[Any, HTTPValidationError]]:
     """Int Enum
 
     Args:
@@ -73,7 +79,6 @@ def sync_detailed(
         Response[Union[Any, HTTPValidationError]]
     """
 
-    client = client if not isinstance(client, Unset) else MyTestApiClient.instance()
     kwargs = _get_kwargs(
         client=client,
         int_enum=int_enum,
@@ -87,9 +92,7 @@ def sync_detailed(
     return _build_response(client=client, response=response)
 
 
-def sync(
-    *, int_enum: AnIntEnum, client: Union[MyTestApiClient, Unset] = UNSET
-) -> Optional[Union[Any, HTTPValidationError]]:
+def sync(*, int_enum: AnIntEnum, client: "MyTestApiClient") -> Optional[Union[Any, HTTPValidationError]]:
     """Int Enum
 
     Args:
@@ -110,7 +113,7 @@ def sync(
 
 
 async def asyncio_detailed(
-    *, int_enum: AnIntEnum, client: Union[MyTestApiClient, Unset] = UNSET
+    *, int_enum: AnIntEnum, client: "MyTestApiClient"
 ) -> Response[Union[Any, HTTPValidationError]]:
     """Int Enum
 
@@ -125,7 +128,6 @@ async def asyncio_detailed(
         Response[Union[Any, HTTPValidationError]]
     """
 
-    client = client if not isinstance(client, Unset) else MyTestApiClient.instance()
     kwargs = _get_kwargs(
         client=client,
         int_enum=int_enum,
@@ -137,9 +139,7 @@ async def asyncio_detailed(
     return _build_response(client=client, response=response)
 
 
-async def asyncio(
-    *, int_enum: AnIntEnum, client: Union[MyTestApiClient, Unset] = UNSET
-) -> Optional[Union[Any, HTTPValidationError]]:
+async def asyncio(*, int_enum: AnIntEnum, client: "MyTestApiClient") -> Optional[Union[Any, HTTPValidationError]]:
     """Int Enum
 
     Args:

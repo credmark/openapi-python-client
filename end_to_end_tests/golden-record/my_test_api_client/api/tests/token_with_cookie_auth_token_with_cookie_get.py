@@ -1,14 +1,16 @@
 from http import HTTPStatus
-from typing import Any, Dict, Optional, Union
+from typing import TYPE_CHECKING, Any, Dict, Optional
 
 import httpx
 
+if TYPE_CHECKING:
+    from ...client import MyTestApiClient
+
 from ... import errors
-from ...client import MyTestApiClient
-from ...types import UNSET, Response, Unset
+from ...types import Response
 
 
-def _get_kwargs(*, my_token: str, client: MyTestApiClient) -> Dict[str, Any]:
+def _get_kwargs(*, my_token: str, client: "MyTestApiClient") -> Dict[str, Any]:
     url = "{}/auth/token_with_cookie".format(client.base_url)
 
     headers: Dict[str, str] = client.get_headers()
@@ -26,7 +28,7 @@ def _get_kwargs(*, my_token: str, client: MyTestApiClient) -> Dict[str, Any]:
     }
 
 
-def _parse_response(*, client: MyTestApiClient, response: httpx.Response) -> Optional[Any]:
+def _parse_response(*, client: "MyTestApiClient", response: httpx.Response) -> Optional[Any]:
     if response.status_code == HTTPStatus.OK:
         return None
     if response.status_code == HTTPStatus.UNAUTHORIZED:
@@ -37,7 +39,7 @@ def _parse_response(*, client: MyTestApiClient, response: httpx.Response) -> Opt
         return None
 
 
-def _build_response(*, client: MyTestApiClient, response: httpx.Response) -> Response[Any]:
+def _build_response(*, client: "MyTestApiClient", response: httpx.Response) -> Response[Any]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -46,7 +48,7 @@ def _build_response(*, client: MyTestApiClient, response: httpx.Response) -> Res
     )
 
 
-def sync_detailed(*, my_token: str, client: Union[MyTestApiClient, Unset] = UNSET) -> Response[Any]:
+def sync_detailed(*, my_token: str, client: "MyTestApiClient") -> Response[Any]:
     """TOKEN_WITH_COOKIE
 
      Test optional cookie parameters
@@ -62,7 +64,6 @@ def sync_detailed(*, my_token: str, client: Union[MyTestApiClient, Unset] = UNSE
         Response[Any]
     """
 
-    client = client if not isinstance(client, Unset) else MyTestApiClient.instance()
     kwargs = _get_kwargs(
         client=client,
         my_token=my_token,
@@ -76,7 +77,7 @@ def sync_detailed(*, my_token: str, client: Union[MyTestApiClient, Unset] = UNSE
     return _build_response(client=client, response=response)
 
 
-async def asyncio_detailed(*, my_token: str, client: Union[MyTestApiClient, Unset] = UNSET) -> Response[Any]:
+def sync(*, my_token: str, client: "MyTestApiClient") -> Optional[Any]:
     """TOKEN_WITH_COOKIE
 
      Test optional cookie parameters
@@ -92,7 +93,28 @@ async def asyncio_detailed(*, my_token: str, client: Union[MyTestApiClient, Unse
         Response[Any]
     """
 
-    client = client if not isinstance(client, Unset) else MyTestApiClient.instance()
+    return sync_detailed(
+        client=client,
+        my_token=my_token,
+    ).parsed
+
+
+async def asyncio_detailed(*, my_token: str, client: "MyTestApiClient") -> Response[Any]:
+    """TOKEN_WITH_COOKIE
+
+     Test optional cookie parameters
+
+    Args:
+        my_token (str):
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        Response[Any]
+    """
+
     kwargs = _get_kwargs(
         client=client,
         my_token=my_token,
@@ -102,3 +124,27 @@ async def asyncio_detailed(*, my_token: str, client: Union[MyTestApiClient, Unse
         response = await _client.request(**kwargs)
 
     return _build_response(client=client, response=response)
+
+
+async def asyncio(*, my_token: str, client: "MyTestApiClient") -> Optional[Any]:
+    """TOKEN_WITH_COOKIE
+
+     Test optional cookie parameters
+
+    Args:
+        my_token (str):
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        Response[Any]
+    """
+
+    return (
+        await asyncio_detailed(
+            client=client,
+            my_token=my_token,
+        )
+    ).parsed

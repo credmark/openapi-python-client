@@ -1,14 +1,16 @@
 from http import HTTPStatus
-from typing import Any, Dict, Optional, Union
+from typing import TYPE_CHECKING, Any, Dict, Optional
 
 import httpx
 
+if TYPE_CHECKING:
+    from ...client import MyTestApiClient
+
 from ... import errors
-from ...client import MyTestApiClient
-from ...types import UNSET, Response, Unset
+from ...types import UNSET, Response
 
 
-def _get_kwargs(*, import_: str, client: MyTestApiClient) -> Dict[str, Any]:
+def _get_kwargs(*, import_: str, client: "MyTestApiClient") -> Dict[str, Any]:
     url = "{}/naming/keywords".format(client.base_url)
 
     headers: Dict[str, str] = client.get_headers()
@@ -30,7 +32,7 @@ def _get_kwargs(*, import_: str, client: MyTestApiClient) -> Dict[str, Any]:
     }
 
 
-def _parse_response(*, client: MyTestApiClient, response: httpx.Response) -> Optional[Any]:
+def _parse_response(*, client: "MyTestApiClient", response: httpx.Response) -> Optional[Any]:
     if response.status_code == HTTPStatus.OK:
         return None
     if client.raise_on_unexpected_status:
@@ -39,7 +41,7 @@ def _parse_response(*, client: MyTestApiClient, response: httpx.Response) -> Opt
         return None
 
 
-def _build_response(*, client: MyTestApiClient, response: httpx.Response) -> Response[Any]:
+def _build_response(*, client: "MyTestApiClient", response: httpx.Response) -> Response[Any]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -48,7 +50,7 @@ def _build_response(*, client: MyTestApiClient, response: httpx.Response) -> Res
     )
 
 
-def sync_detailed(*, import_: str, client: Union[MyTestApiClient, Unset] = UNSET) -> Response[Any]:
+def sync_detailed(*, import_: str, client: "MyTestApiClient") -> Response[Any]:
     """
     Args:
         import_ (str):
@@ -61,7 +63,6 @@ def sync_detailed(*, import_: str, client: Union[MyTestApiClient, Unset] = UNSET
         Response[Any]
     """
 
-    client = client if not isinstance(client, Unset) else MyTestApiClient.instance()
     kwargs = _get_kwargs(
         client=client,
         import_=import_,
@@ -75,7 +76,7 @@ def sync_detailed(*, import_: str, client: Union[MyTestApiClient, Unset] = UNSET
     return _build_response(client=client, response=response)
 
 
-async def asyncio_detailed(*, import_: str, client: Union[MyTestApiClient, Unset] = UNSET) -> Response[Any]:
+def sync(*, import_: str, client: "MyTestApiClient") -> Optional[Any]:
     """
     Args:
         import_ (str):
@@ -88,7 +89,25 @@ async def asyncio_detailed(*, import_: str, client: Union[MyTestApiClient, Unset
         Response[Any]
     """
 
-    client = client if not isinstance(client, Unset) else MyTestApiClient.instance()
+    return sync_detailed(
+        client=client,
+        import_=import_,
+    ).parsed
+
+
+async def asyncio_detailed(*, import_: str, client: "MyTestApiClient") -> Response[Any]:
+    """
+    Args:
+        import_ (str):
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        Response[Any]
+    """
+
     kwargs = _get_kwargs(
         client=client,
         import_=import_,
@@ -98,3 +117,24 @@ async def asyncio_detailed(*, import_: str, client: Union[MyTestApiClient, Unset
         response = await _client.request(**kwargs)
 
     return _build_response(client=client, response=response)
+
+
+async def asyncio(*, import_: str, client: "MyTestApiClient") -> Optional[Any]:
+    """
+    Args:
+        import_ (str):
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        Response[Any]
+    """
+
+    return (
+        await asyncio_detailed(
+            client=client,
+            import_=import_,
+        )
+    ).parsed

@@ -1,6 +1,14 @@
 import ssl
-import threading
 from typing import Dict, Union
+
+from .api.default import Default
+from .api.location import Location
+from .api.parameter_references import ParameterReferences
+from .api.parameters import Parameters
+from .api.responses import Responses
+from .api.tag1 import Tag1
+from .api.tests import Tests
+from .api.true_ import True_
 
 
 class MyTestApiClient:
@@ -18,42 +26,6 @@ class MyTestApiClient:
             status code that was not documented in the source OpenAPI document.
         follow_redirects: Whether or not to follow redirects. Default value is False.
     """
-
-    __lock__ = threading.RLock()
-    __instance__: Union["MyTestApiClient", None] = None
-
-    @classmethod
-    def configure(
-        cls,
-        base_url: str = "http://localhost:8080",
-        cookies: Union[Dict[str, str], None] = None,
-        headers: Union[Dict[str, str], None] = None,
-        timeout: float = 5.0,
-        verify_ssl: Union[str, bool, ssl.SSLContext] = True,
-        raise_on_unexpected_status: bool = False,
-        follow_redirects: bool = False,
-        token: Union[str, None] = None,
-        prefix: str = "Bearer",
-        auth_header_name: str = "Authorization",
-    ) -> "MyTestApiClient":
-        cookies = cookies if cookies is not None else {}
-        headers = headers if headers is not None else {}
-
-        with cls.__lock__:
-            cls.__instance__ = cls(
-                base_url=base_url,
-                cookies=cookies,
-                headers=headers,
-                timeout=timeout,
-                verify_ssl=verify_ssl,
-                raise_on_unexpected_status=raise_on_unexpected_status,
-                follow_redirects=follow_redirects,
-                token=token,
-                prefix=prefix,
-                auth_header_name=auth_header_name,
-            )
-
-        return cls.__instance__
 
     def __init__(
         self,
@@ -82,12 +54,14 @@ class MyTestApiClient:
         self.prefix = prefix
         self.auth_header_name = auth_header_name
 
-    @classmethod
-    def instance(cls) -> "MyTestApiClient":
-        if cls.__instance__ is None:
-            return cls.configure()
-        else:
-            return cls.__instance__
+        self.tests = Tests(client=self)
+        self.responses = Responses(client=self)
+        self.default = Default(client=self)
+        self.parameters = Parameters(client=self)
+        self.tag1 = Tag1(client=self)
+        self.location = Location(client=self)
+        self.true_ = True_(client=self)
+        self.parameter_references = ParameterReferences(client=self)
 
     def get_headers(self) -> Dict[str, str]:
         """Get headers to be used in all endpoints"""

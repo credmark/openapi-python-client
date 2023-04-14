@@ -1,13 +1,8 @@
 import ssl
-import threading
 from typing import Dict, Union
 
-{% for collection in endpoint_collections_by_tag.values() %}
-from .api.{{ collection.tag.identifier_name }} import {{ collection.tag.class_name }}
-{% endfor %}
 
-
-class {{ client_name }}:
+class MyTestApiClient:
     """A class for keeping track of data related to the API
 
     Attributes:
@@ -38,7 +33,7 @@ class {{ client_name }}:
     ):
         cookies = cookies if cookies is not None else {}
         headers = headers if headers is not None else {}
-        
+
         self.base_url = base_url
         self.cookies = cookies
         self.headers = headers
@@ -49,11 +44,6 @@ class {{ client_name }}:
         self.token = token
         self.prefix = prefix
         self.auth_header_name = auth_header_name
-
-
-        {% for collection in endpoint_collections_by_tag.values() %}
-        self.{{ collection.tag.identifier_name }} = {{ collection.tag.class_name }}(client=self)
-        {% endfor %}
 
     def get_headers(self) -> Dict[str, str]:
         """Get headers to be used in all endpoints"""

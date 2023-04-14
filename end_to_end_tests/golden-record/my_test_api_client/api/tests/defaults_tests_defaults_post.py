@@ -1,12 +1,17 @@
-import datetime
 from http import HTTPStatus
-from typing import Any, Dict, List, Optional, Union, cast
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union, cast
 
 import httpx
+
+if TYPE_CHECKING:
+    from ...client import MyTestApiClient
+
+import datetime
+from typing import Dict, List, Optional, Union, cast
+
 from dateutil.parser import isoparse
 
 from ... import errors
-from ...client import MyTestApiClient
 from ...models.an_enum import AnEnum
 from ...models.http_validation_error import HTTPValidationError
 from ...models.model_with_union_property import ModelWithUnionProperty
@@ -26,7 +31,7 @@ def _get_kwargs(
     enum_prop: AnEnum,
     model_prop: "ModelWithUnionProperty",
     required_model_prop: "ModelWithUnionProperty",
-    client: MyTestApiClient,
+    client: "MyTestApiClient",
 ) -> Dict[str, Any]:
     url = "{}/tests/defaults".format(client.base_url)
 
@@ -100,7 +105,9 @@ def _get_kwargs(
     }
 
 
-def _parse_response(*, client: MyTestApiClient, response: httpx.Response) -> Optional[Union[Any, HTTPValidationError]]:
+def _parse_response(
+    *, client: "MyTestApiClient", response: httpx.Response
+) -> Optional[Union[Any, HTTPValidationError]]:
     if response.status_code == HTTPStatus.OK:
         response_200 = cast(Any, response.json())
         return response_200
@@ -114,7 +121,9 @@ def _parse_response(*, client: MyTestApiClient, response: httpx.Response) -> Opt
         return None
 
 
-def _build_response(*, client: MyTestApiClient, response: httpx.Response) -> Response[Union[Any, HTTPValidationError]]:
+def _build_response(
+    *, client: "MyTestApiClient", response: httpx.Response
+) -> Response[Union[Any, HTTPValidationError]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -136,7 +145,7 @@ def sync_detailed(
     enum_prop: AnEnum,
     model_prop: "ModelWithUnionProperty",
     required_model_prop: "ModelWithUnionProperty",
-    client: Union[MyTestApiClient, Unset] = UNSET,
+    client: "MyTestApiClient",
 ) -> Response[Union[Any, HTTPValidationError]]:
     """Defaults
 
@@ -161,7 +170,6 @@ def sync_detailed(
         Response[Union[Any, HTTPValidationError]]
     """
 
-    client = client if not isinstance(client, Unset) else MyTestApiClient.instance()
     kwargs = _get_kwargs(
         client=client,
         string_prop=string_prop,
@@ -198,7 +206,7 @@ def sync(
     enum_prop: AnEnum,
     model_prop: "ModelWithUnionProperty",
     required_model_prop: "ModelWithUnionProperty",
-    client: Union[MyTestApiClient, Unset] = UNSET,
+    client: "MyTestApiClient",
 ) -> Optional[Union[Any, HTTPValidationError]]:
     """Defaults
 
@@ -252,7 +260,7 @@ async def asyncio_detailed(
     enum_prop: AnEnum,
     model_prop: "ModelWithUnionProperty",
     required_model_prop: "ModelWithUnionProperty",
-    client: Union[MyTestApiClient, Unset] = UNSET,
+    client: "MyTestApiClient",
 ) -> Response[Union[Any, HTTPValidationError]]:
     """Defaults
 
@@ -277,7 +285,6 @@ async def asyncio_detailed(
         Response[Union[Any, HTTPValidationError]]
     """
 
-    client = client if not isinstance(client, Unset) else MyTestApiClient.instance()
     kwargs = _get_kwargs(
         client=client,
         string_prop=string_prop,
@@ -312,7 +319,7 @@ async def asyncio(
     enum_prop: AnEnum,
     model_prop: "ModelWithUnionProperty",
     required_model_prop: "ModelWithUnionProperty",
-    client: Union[MyTestApiClient, Unset] = UNSET,
+    client: "MyTestApiClient",
 ) -> Optional[Union[Any, HTTPValidationError]]:
     """Defaults
 

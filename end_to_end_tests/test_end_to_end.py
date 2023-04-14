@@ -97,6 +97,7 @@ def test_custom_templates():
 
     expected_difference_paths = [
         Path("README.md"),
+        Path("my_test_api_client").joinpath("client.py"),
         api_dir.joinpath("__init__.py"),
     ]
 

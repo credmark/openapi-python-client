@@ -293,13 +293,13 @@ class Project:  # pylint: disable=too-many-instance-attributes
         endpoint_template = self.env.get_template(
             "endpoint_module.py.jinja", globals={"isbool": lambda obj: obj.get_base_type_string() == "bool"}
         )
-        api_template = self.env.get_template(
-            "api.py.jinja", globals={"isbool": lambda obj: obj.get_base_type_string() == "bool"}
-        )
         api_doc_template = self.env.get_template(
             "api.md.jinja", globals={"isbool": lambda obj: obj.get_base_type_string() == "bool"}
         )
         for _, collection in endpoint_collections_by_tag.items():
+            def module_name(endpoint):
+                return utils.PythonIdentifier(endpoint.name, self.config.field_prefix)
+                
             tag = collection.tag
             tag_dir = api_dir / tag.identifier_name
             tag_dir.mkdir()
@@ -307,13 +307,10 @@ class Project:  # pylint: disable=too-many-instance-attributes
             endpoint_init_path = tag_dir / "__init__.py"
             endpoint_init_template = self.env.get_template("endpoint_init.py.jinja")
             endpoint_init_path.write_text(
-                endpoint_init_template.render(endpoint_collection=collection),
+                endpoint_init_template.render(endpoint_collection=collection, module_name=module_name),
                 encoding=self.file_encoding,
             )
             
-            def module_name(endpoint):
-                return utils.PythonIdentifier(endpoint.name, self.config.field_prefix)
-
             for endpoint in collection.endpoints:
                 module_path = tag_dir / f"{module_name(endpoint)}.py"
                 module_path.write_text(
@@ -323,12 +320,6 @@ class Project:  # pylint: disable=too-many-instance-attributes
                     encoding=self.file_encoding,
                 )
 
-            api_path = self.package_dir / f"{tag.identifier_name}.py"
-            api_path.write_text(
-                api_template.render(endpoint_collection=collection, module_name=module_name),
-                encoding=self.file_encoding
-            )
-            
             api_doc_path = docs_dir / f"{tag.class_name}.md"
             api_doc_path.write_text(
                 api_doc_template.render(endpoint_collection=collection, module_name=module_name),

@@ -1,4 +1,0 @@
-from .api.tag1 import get_tag_with_number as __get_tag_with_number
-
-get_tag_with_number = __get_tag_with_number.sync_detailed
-get_tag_with_number_async = __get_tag_with_number.asyncio_detailed
