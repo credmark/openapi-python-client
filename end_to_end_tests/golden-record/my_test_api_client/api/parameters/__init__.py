@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Any, Optional
+from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
     from ...client import MyTestApiClient
@@ -23,7 +23,7 @@ class Parameters:
         param_path: str,
         *,
         param_query: str = "overridden_in_GET",
-    ) -> Optional[Any]:
+    ) -> Any:
         """Test that if you have an overriding property from `PathItem` in `Operation`, it produces valid code
 
         Args:
@@ -32,7 +32,7 @@ class Parameters:
                 'overridden_in_GET'. Example: an example string.
 
         Raises:
-            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            errors.UnexpectedStatus: If the server returns a non 2xx status code.
             httpx.TimeoutException: If the request takes longer than Client.timeout.
 
         Returns:
@@ -50,7 +50,7 @@ class Parameters:
         param_path: str,
         *,
         param_query: str = "overridden_in_GET",
-    ) -> Optional[Any]:
+    ) -> Any:
         """Test that if you have an overriding property from `PathItem` in `Operation`, it produces valid code
 
         Args:
@@ -59,7 +59,7 @@ class Parameters:
                 'overridden_in_GET'. Example: an example string.
 
         Raises:
-            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            errors.UnexpectedStatus: If the server returns a non 2xx status code.
             httpx.TimeoutException: If the request takes longer than Client.timeout.
 
         Returns:
@@ -77,14 +77,14 @@ class Parameters:
         param_path: str,
         *,
         param_query: Union[Unset, None, str] = UNSET,
-    ) -> Optional[Any]:
+    ) -> Any:
         """
         Args:
             param_path (str):
             param_query (Union[Unset, None, str]):
 
         Raises:
-            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            errors.UnexpectedStatus: If the server returns a non 2xx status code.
             httpx.TimeoutException: If the request takes longer than Client.timeout.
 
         Returns:
@@ -102,14 +102,14 @@ class Parameters:
         param_path: str,
         *,
         param_query: Union[Unset, None, str] = UNSET,
-    ) -> Optional[Any]:
+    ) -> Any:
         """
         Args:
             param_path (str):
             param_query (Union[Unset, None, str]):
 
         Raises:
-            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            errors.UnexpectedStatus: If the server returns a non 2xx status code.
             httpx.TimeoutException: If the request takes longer than Client.timeout.
 
         Returns:
@@ -129,7 +129,7 @@ class Parameters:
         param_query: Union[Unset, None, str] = UNSET,
         param_header: Union[Unset, str] = UNSET,
         param_cookie: Union[Unset, str] = UNSET,
-    ) -> Optional[Any]:
+    ) -> Any:
         """
         Args:
             param_path (str):
@@ -138,7 +138,7 @@ class Parameters:
             param_cookie (Union[Unset, str]):
 
         Raises:
-            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            errors.UnexpectedStatus: If the server returns a non 2xx status code.
             httpx.TimeoutException: If the request takes longer than Client.timeout.
 
         Returns:
@@ -160,7 +160,7 @@ class Parameters:
         param_query: Union[Unset, None, str] = UNSET,
         param_header: Union[Unset, str] = UNSET,
         param_cookie: Union[Unset, str] = UNSET,
-    ) -> Optional[Any]:
+    ) -> Any:
         """
         Args:
             param_path (str):
@@ -169,7 +169,7 @@ class Parameters:
             param_cookie (Union[Unset, str]):
 
         Raises:
-            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            errors.UnexpectedStatus: If the server returns a non 2xx status code.
             httpx.TimeoutException: If the request takes longer than Client.timeout.
 
         Returns:
@@ -190,7 +190,7 @@ class Parameters:
         param2: int,
         param1: str,
         param3: int,
-    ) -> Optional[Any]:
+    ) -> Any:
         """
         Args:
             param4 (str):
@@ -199,7 +199,7 @@ class Parameters:
             param3 (int):
 
         Raises:
-            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            errors.UnexpectedStatus: If the server returns a non 2xx status code.
             httpx.TimeoutException: If the request takes longer than Client.timeout.
 
         Returns:
@@ -220,7 +220,7 @@ class Parameters:
         param2: int,
         param1: str,
         param3: int,
-    ) -> Optional[Any]:
+    ) -> Any:
         """
         Args:
             param4 (str):
@@ -229,7 +229,7 @@ class Parameters:
             param3 (int):
 
         Raises:
-            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            errors.UnexpectedStatus: If the server returns a non 2xx status code.
             httpx.TimeoutException: If the request takes longer than Client.timeout.
 
         Returns:

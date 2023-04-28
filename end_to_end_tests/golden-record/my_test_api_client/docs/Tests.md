@@ -42,7 +42,7 @@ some_date | [Union[datetime.date, datetime.datetime]](Union[datetime.date, datet
 
 
 ### Response Type
-Union[HTTPValidationError, List['AModel']]
+List['AModel']
 
 # **get_basic_list_of_strings**
 
@@ -124,7 +124,7 @@ multipart_data | [BodyUploadFileTestsUploadPost](BodyUploadFileTestsUploadPost) 
 
 
 ### Response Type
-Union[Any, HTTPValidationError]
+Any
 
 # **upload_multiple_files_tests_upload_post**
 
@@ -140,7 +140,7 @@ multipart_data | [List[File]](List[File]) | None
 
 
 ### Response Type
-Union[Any, HTTPValidationError]
+Any
 
 # **json_body_tests_json_body_post**
 
@@ -156,7 +156,7 @@ json_body | [AModel](AModel) | A Model for testing all the ways custom objects c
 
 
 ### Response Type
-Union[Any, HTTPValidationError]
+Any
 
 # **post_tests_json_body_string**
 
@@ -170,7 +170,7 @@ json_body | str | None
 
 
 ### Response Type
-Union[HTTPValidationError, str]
+str
 
 # **defaults_tests_defaults_post**
 
@@ -194,7 +194,7 @@ required_model_prop | [ModelWithUnionProperty](ModelWithUnionProperty) |
 
 
 ### Response Type
-Union[Any, HTTPValidationError]
+Any
 
 # **octet_stream_tests_octet_stream_get**
 
@@ -235,7 +235,7 @@ int_enum | AnIntEnum | An enumeration.
 
 
 ### Response Type
-Union[Any, HTTPValidationError]
+Any
 
 # **test_inline_objects**
 
@@ -281,7 +281,7 @@ json_body | [AModel](AModel) | A Model for testing all the ways custom objects c
 
 
 ### Response Type
-Union[Any, HTTPValidationError]
+Any
 
 # **description_with_backslash**
 

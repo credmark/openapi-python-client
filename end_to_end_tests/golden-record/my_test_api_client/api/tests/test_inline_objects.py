@@ -1,5 +1,5 @@
 from http import HTTPStatus
-from typing import TYPE_CHECKING, Any, Dict, Optional
+from typing import TYPE_CHECKING, Any, Dict
 
 import httpx
 
@@ -33,15 +33,12 @@ def _get_kwargs(*, json_body: TestInlineObjectsJsonBody, client: "MyTestApiClien
     }
 
 
-def _parse_response(*, client: "MyTestApiClient", response: httpx.Response) -> Optional[TestInlineObjectsResponse200]:
+def _parse_response(*, client: "MyTestApiClient", response: httpx.Response) -> TestInlineObjectsResponse200:
     if response.status_code == HTTPStatus.OK:
         response_200 = TestInlineObjectsResponse200.from_dict(response.json())
 
         return response_200
-    if client.raise_on_unexpected_status:
-        raise errors.UnexpectedStatus(response.status_code, response.content)
-    else:
-        return None
+    raise errors.UnexpectedStatus(response.status_code, response.content)
 
 
 def _build_response(*, client: "MyTestApiClient", response: httpx.Response) -> Response[TestInlineObjectsResponse200]:
@@ -62,7 +59,7 @@ def sync_detailed(
         json_body (TestInlineObjectsJsonBody):
 
     Raises:
-        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        errors.UnexpectedStatus: If the server returns a non 2xx status code.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
@@ -82,14 +79,14 @@ def sync_detailed(
     return _build_response(client=client, response=response)
 
 
-def sync(*, json_body: TestInlineObjectsJsonBody, client: "MyTestApiClient") -> Optional[TestInlineObjectsResponse200]:
+def sync(*, json_body: TestInlineObjectsJsonBody, client: "MyTestApiClient") -> TestInlineObjectsResponse200:
     """Test Inline Objects
 
     Args:
         json_body (TestInlineObjectsJsonBody):
 
     Raises:
-        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        errors.UnexpectedStatus: If the server returns a non 2xx status code.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
@@ -111,7 +108,7 @@ async def asyncio_detailed(
         json_body (TestInlineObjectsJsonBody):
 
     Raises:
-        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        errors.UnexpectedStatus: If the server returns a non 2xx status code.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
@@ -129,16 +126,14 @@ async def asyncio_detailed(
     return _build_response(client=client, response=response)
 
 
-async def asyncio(
-    *, json_body: TestInlineObjectsJsonBody, client: "MyTestApiClient"
-) -> Optional[TestInlineObjectsResponse200]:
+async def asyncio(*, json_body: TestInlineObjectsJsonBody, client: "MyTestApiClient") -> TestInlineObjectsResponse200:
     """Test Inline Objects
 
     Args:
         json_body (TestInlineObjectsJsonBody):
 
     Raises:
-        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        errors.UnexpectedStatus: If the server returns a non 2xx status code.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:

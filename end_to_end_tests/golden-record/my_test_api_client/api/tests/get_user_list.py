@@ -75,9 +75,7 @@ def _get_kwargs(
     }
 
 
-def _parse_response(
-    *, client: "MyTestApiClient", response: httpx.Response
-) -> Optional[Union[HTTPValidationError, List["AModel"]]]:
+def _parse_response(*, client: "MyTestApiClient", response: httpx.Response) -> List["AModel"]:
     if response.status_code == HTTPStatus.OK:
         response_200 = []
         _response_200 = response.json()
@@ -90,20 +88,15 @@ def _parse_response(
     if response.status_code == HTTPStatus.UNPROCESSABLE_ENTITY:
         response_422 = HTTPValidationError.from_dict(response.json())
 
-        return response_422
+        raise errors.UnexpectedStatus(response.status_code, response.content, response_422)
     if response.status_code == HTTPStatus.LOCKED:
         response_423 = HTTPValidationError.from_dict(response.json())
 
-        return response_423
-    if client.raise_on_unexpected_status:
-        raise errors.UnexpectedStatus(response.status_code, response.content)
-    else:
-        return None
+        raise errors.UnexpectedStatus(response.status_code, response.content, response_423)
+    raise errors.UnexpectedStatus(response.status_code, response.content)
 
 
-def _build_response(
-    *, client: "MyTestApiClient", response: httpx.Response
-) -> Response[Union[HTTPValidationError, List["AModel"]]]:
+def _build_response(*, client: "MyTestApiClient", response: httpx.Response) -> Response[List["AModel"]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -119,7 +112,7 @@ def sync_detailed(
     an_enum_value_with_only_null: List[None],
     some_date: Union[datetime.date, datetime.datetime],
     client: "MyTestApiClient",
-) -> Response[Union[HTTPValidationError, List["AModel"]]]:
+) -> Response[List["AModel"]]:
     """Get List
 
      Get a list of things
@@ -131,11 +124,11 @@ def sync_detailed(
         some_date (Union[datetime.date, datetime.datetime]):
 
     Raises:
-        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        errors.UnexpectedStatus: If the server returns a non 2xx status code.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[HTTPValidationError, List['AModel']]]
+        Response[List['AModel']]
     """
 
     kwargs = _get_kwargs(
@@ -161,7 +154,7 @@ def sync(
     an_enum_value_with_only_null: List[None],
     some_date: Union[datetime.date, datetime.datetime],
     client: "MyTestApiClient",
-) -> Optional[Union[HTTPValidationError, List["AModel"]]]:
+) -> List["AModel"]:
     """Get List
 
      Get a list of things
@@ -173,11 +166,11 @@ def sync(
         some_date (Union[datetime.date, datetime.datetime]):
 
     Raises:
-        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        errors.UnexpectedStatus: If the server returns a non 2xx status code.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[HTTPValidationError, List['AModel']]]
+        Response[List['AModel']]
     """
 
     return sync_detailed(
@@ -196,7 +189,7 @@ async def asyncio_detailed(
     an_enum_value_with_only_null: List[None],
     some_date: Union[datetime.date, datetime.datetime],
     client: "MyTestApiClient",
-) -> Response[Union[HTTPValidationError, List["AModel"]]]:
+) -> Response[List["AModel"]]:
     """Get List
 
      Get a list of things
@@ -208,11 +201,11 @@ async def asyncio_detailed(
         some_date (Union[datetime.date, datetime.datetime]):
 
     Raises:
-        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        errors.UnexpectedStatus: If the server returns a non 2xx status code.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[HTTPValidationError, List['AModel']]]
+        Response[List['AModel']]
     """
 
     kwargs = _get_kwargs(
@@ -236,7 +229,7 @@ async def asyncio(
     an_enum_value_with_only_null: List[None],
     some_date: Union[datetime.date, datetime.datetime],
     client: "MyTestApiClient",
-) -> Optional[Union[HTTPValidationError, List["AModel"]]]:
+) -> List["AModel"]:
     """Get List
 
      Get a list of things
@@ -248,11 +241,11 @@ async def asyncio(
         some_date (Union[datetime.date, datetime.datetime]):
 
     Raises:
-        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        errors.UnexpectedStatus: If the server returns a non 2xx status code.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[HTTPValidationError, List['AModel']]]
+        Response[List['AModel']]
     """
 
     return (

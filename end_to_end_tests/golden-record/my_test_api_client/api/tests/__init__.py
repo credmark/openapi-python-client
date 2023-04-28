@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Any, Optional
+from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
     from ...client import MyTestApiClient
@@ -56,7 +56,7 @@ class Tests:
         an_enum_value_with_null: List[Optional[AnEnumWithNull]],
         an_enum_value_with_only_null: List[None],
         some_date: Union[datetime.date, datetime.datetime],
-    ) -> Optional[Union[HTTPValidationError, List["AModel"]]]:
+    ) -> List["AModel"]:
         """Get List
 
          Get a list of things
@@ -68,11 +68,11 @@ class Tests:
             some_date (Union[datetime.date, datetime.datetime]):
 
         Raises:
-            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            errors.UnexpectedStatus: If the server returns a non 2xx status code.
             httpx.TimeoutException: If the request takes longer than Client.timeout.
 
         Returns:
-            Response[Union[HTTPValidationError, List['AModel']]]
+            Response[List['AModel']]
         """
 
         return get_user_list.sync(
@@ -90,7 +90,7 @@ class Tests:
         an_enum_value_with_null: List[Optional[AnEnumWithNull]],
         an_enum_value_with_only_null: List[None],
         some_date: Union[datetime.date, datetime.datetime],
-    ) -> Optional[Union[HTTPValidationError, List["AModel"]]]:
+    ) -> List["AModel"]:
         """Get List
 
          Get a list of things
@@ -102,11 +102,11 @@ class Tests:
             some_date (Union[datetime.date, datetime.datetime]):
 
         Raises:
-            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            errors.UnexpectedStatus: If the server returns a non 2xx status code.
             httpx.TimeoutException: If the request takes longer than Client.timeout.
 
         Returns:
-            Response[Union[HTTPValidationError, List['AModel']]]
+            Response[List['AModel']]
         """
 
         return await get_user_list.asyncio(
@@ -119,13 +119,13 @@ class Tests:
 
     def get_basic_list_of_strings(
         self,
-    ) -> Optional[List[str]]:
+    ) -> List[str]:
         """Get Basic List Of Strings
 
          Get a list of strings
 
         Raises:
-            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            errors.UnexpectedStatus: If the server returns a non 2xx status code.
             httpx.TimeoutException: If the request takes longer than Client.timeout.
 
         Returns:
@@ -138,13 +138,13 @@ class Tests:
 
     async def get_basic_list_of_strings_async(
         self,
-    ) -> Optional[List[str]]:
+    ) -> List[str]:
         """Get Basic List Of Strings
 
          Get a list of strings
 
         Raises:
-            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            errors.UnexpectedStatus: If the server returns a non 2xx status code.
             httpx.TimeoutException: If the request takes longer than Client.timeout.
 
         Returns:
@@ -157,13 +157,13 @@ class Tests:
 
     def get_basic_list_of_integers(
         self,
-    ) -> Optional[List[int]]:
+    ) -> List[int]:
         """Get Basic List Of Integers
 
          Get a list of integers
 
         Raises:
-            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            errors.UnexpectedStatus: If the server returns a non 2xx status code.
             httpx.TimeoutException: If the request takes longer than Client.timeout.
 
         Returns:
@@ -176,13 +176,13 @@ class Tests:
 
     async def get_basic_list_of_integers_async(
         self,
-    ) -> Optional[List[int]]:
+    ) -> List[int]:
         """Get Basic List Of Integers
 
          Get a list of integers
 
         Raises:
-            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            errors.UnexpectedStatus: If the server returns a non 2xx status code.
             httpx.TimeoutException: If the request takes longer than Client.timeout.
 
         Returns:
@@ -195,13 +195,13 @@ class Tests:
 
     def get_basic_list_of_floats(
         self,
-    ) -> Optional[List[float]]:
+    ) -> List[float]:
         """Get Basic List Of Floats
 
          Get a list of floats
 
         Raises:
-            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            errors.UnexpectedStatus: If the server returns a non 2xx status code.
             httpx.TimeoutException: If the request takes longer than Client.timeout.
 
         Returns:
@@ -214,13 +214,13 @@ class Tests:
 
     async def get_basic_list_of_floats_async(
         self,
-    ) -> Optional[List[float]]:
+    ) -> List[float]:
         """Get Basic List Of Floats
 
          Get a list of floats
 
         Raises:
-            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            errors.UnexpectedStatus: If the server returns a non 2xx status code.
             httpx.TimeoutException: If the request takes longer than Client.timeout.
 
         Returns:
@@ -233,13 +233,13 @@ class Tests:
 
     def get_basic_list_of_booleans(
         self,
-    ) -> Optional[List[bool]]:
+    ) -> List[bool]:
         """Get Basic List Of Booleans
 
          Get a list of booleans
 
         Raises:
-            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            errors.UnexpectedStatus: If the server returns a non 2xx status code.
             httpx.TimeoutException: If the request takes longer than Client.timeout.
 
         Returns:
@@ -252,13 +252,13 @@ class Tests:
 
     async def get_basic_list_of_booleans_async(
         self,
-    ) -> Optional[List[bool]]:
+    ) -> List[bool]:
         """Get Basic List Of Booleans
 
          Get a list of booleans
 
         Raises:
-            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            errors.UnexpectedStatus: If the server returns a non 2xx status code.
             httpx.TimeoutException: If the request takes longer than Client.timeout.
 
         Returns:
@@ -273,13 +273,13 @@ class Tests:
         self,
         *,
         form_data: AFormData,
-    ) -> Optional[Any]:
+    ) -> Any:
         """Post form data
 
          Post form data
 
         Raises:
-            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            errors.UnexpectedStatus: If the server returns a non 2xx status code.
             httpx.TimeoutException: If the request takes longer than Client.timeout.
 
         Returns:
@@ -295,13 +295,13 @@ class Tests:
         self,
         *,
         form_data: AFormData,
-    ) -> Optional[Any]:
+    ) -> Any:
         """Post form data
 
          Post form data
 
         Raises:
-            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            errors.UnexpectedStatus: If the server returns a non 2xx status code.
             httpx.TimeoutException: If the request takes longer than Client.timeout.
 
         Returns:
@@ -317,13 +317,13 @@ class Tests:
         self,
         *,
         form_data: PostFormDataInlineData,
-    ) -> Optional[Any]:
+    ) -> Any:
         """Post form data (inline schema)
 
          Post form data (inline schema)
 
         Raises:
-            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            errors.UnexpectedStatus: If the server returns a non 2xx status code.
             httpx.TimeoutException: If the request takes longer than Client.timeout.
 
         Returns:
@@ -339,13 +339,13 @@ class Tests:
         self,
         *,
         form_data: PostFormDataInlineData,
-    ) -> Optional[Any]:
+    ) -> Any:
         """Post form data (inline schema)
 
          Post form data (inline schema)
 
         Raises:
-            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            errors.UnexpectedStatus: If the server returns a non 2xx status code.
             httpx.TimeoutException: If the request takes longer than Client.timeout.
 
         Returns:
@@ -361,7 +361,7 @@ class Tests:
         self,
         *,
         multipart_data: BodyUploadFileTestsUploadPost,
-    ) -> Optional[Union[Any, HTTPValidationError]]:
+    ) -> Any:
         """Upload File
 
          Upload a file
@@ -370,11 +370,11 @@ class Tests:
             multipart_data (BodyUploadFileTestsUploadPost):
 
         Raises:
-            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            errors.UnexpectedStatus: If the server returns a non 2xx status code.
             httpx.TimeoutException: If the request takes longer than Client.timeout.
 
         Returns:
-            Response[Union[Any, HTTPValidationError]]
+            Response[Any]
         """
 
         return upload_file_tests_upload_post.sync(
@@ -386,7 +386,7 @@ class Tests:
         self,
         *,
         multipart_data: BodyUploadFileTestsUploadPost,
-    ) -> Optional[Union[Any, HTTPValidationError]]:
+    ) -> Any:
         """Upload File
 
          Upload a file
@@ -395,11 +395,11 @@ class Tests:
             multipart_data (BodyUploadFileTestsUploadPost):
 
         Raises:
-            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            errors.UnexpectedStatus: If the server returns a non 2xx status code.
             httpx.TimeoutException: If the request takes longer than Client.timeout.
 
         Returns:
-            Response[Union[Any, HTTPValidationError]]
+            Response[Any]
         """
 
         return await upload_file_tests_upload_post.asyncio(
@@ -411,7 +411,7 @@ class Tests:
         self,
         *,
         multipart_data: List[File],
-    ) -> Optional[Union[Any, HTTPValidationError]]:
+    ) -> Any:
         """Upload multiple files
 
          Upload several files in the same request
@@ -420,11 +420,11 @@ class Tests:
             multipart_data (List[File]):
 
         Raises:
-            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            errors.UnexpectedStatus: If the server returns a non 2xx status code.
             httpx.TimeoutException: If the request takes longer than Client.timeout.
 
         Returns:
-            Response[Union[Any, HTTPValidationError]]
+            Response[Any]
         """
 
         return upload_multiple_files_tests_upload_post.sync(
@@ -436,7 +436,7 @@ class Tests:
         self,
         *,
         multipart_data: List[File],
-    ) -> Optional[Union[Any, HTTPValidationError]]:
+    ) -> Any:
         """Upload multiple files
 
          Upload several files in the same request
@@ -445,11 +445,11 @@ class Tests:
             multipart_data (List[File]):
 
         Raises:
-            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            errors.UnexpectedStatus: If the server returns a non 2xx status code.
             httpx.TimeoutException: If the request takes longer than Client.timeout.
 
         Returns:
-            Response[Union[Any, HTTPValidationError]]
+            Response[Any]
         """
 
         return await upload_multiple_files_tests_upload_post.asyncio(
@@ -461,7 +461,7 @@ class Tests:
         self,
         *,
         json_body: AModel,
-    ) -> Optional[Union[Any, HTTPValidationError]]:
+    ) -> Any:
         """Json Body
 
          Try sending a JSON body
@@ -470,11 +470,11 @@ class Tests:
             json_body (AModel): A Model for testing all the ways custom objects can be used
 
         Raises:
-            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            errors.UnexpectedStatus: If the server returns a non 2xx status code.
             httpx.TimeoutException: If the request takes longer than Client.timeout.
 
         Returns:
-            Response[Union[Any, HTTPValidationError]]
+            Response[Any]
         """
 
         return json_body_tests_json_body_post.sync(
@@ -486,7 +486,7 @@ class Tests:
         self,
         *,
         json_body: AModel,
-    ) -> Optional[Union[Any, HTTPValidationError]]:
+    ) -> Any:
         """Json Body
 
          Try sending a JSON body
@@ -495,11 +495,11 @@ class Tests:
             json_body (AModel): A Model for testing all the ways custom objects can be used
 
         Raises:
-            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            errors.UnexpectedStatus: If the server returns a non 2xx status code.
             httpx.TimeoutException: If the request takes longer than Client.timeout.
 
         Returns:
-            Response[Union[Any, HTTPValidationError]]
+            Response[Any]
         """
 
         return await json_body_tests_json_body_post.asyncio(
@@ -511,18 +511,18 @@ class Tests:
         self,
         *,
         json_body: str,
-    ) -> Optional[Union[HTTPValidationError, str]]:
+    ) -> str:
         """Json Body Which is String
 
         Args:
             json_body (str):
 
         Raises:
-            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            errors.UnexpectedStatus: If the server returns a non 2xx status code.
             httpx.TimeoutException: If the request takes longer than Client.timeout.
 
         Returns:
-            Response[Union[HTTPValidationError, str]]
+            Response[str]
         """
 
         return post_tests_json_body_string.sync(
@@ -534,18 +534,18 @@ class Tests:
         self,
         *,
         json_body: str,
-    ) -> Optional[Union[HTTPValidationError, str]]:
+    ) -> str:
         """Json Body Which is String
 
         Args:
             json_body (str):
 
         Raises:
-            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            errors.UnexpectedStatus: If the server returns a non 2xx status code.
             httpx.TimeoutException: If the request takes longer than Client.timeout.
 
         Returns:
-            Response[Union[HTTPValidationError, str]]
+            Response[str]
         """
 
         return await post_tests_json_body_string.asyncio(
@@ -567,7 +567,7 @@ class Tests:
         enum_prop: AnEnum,
         model_prop: "ModelWithUnionProperty",
         required_model_prop: "ModelWithUnionProperty",
-    ) -> Optional[Union[Any, HTTPValidationError]]:
+    ) -> Any:
         """Defaults
 
         Args:
@@ -584,11 +584,11 @@ class Tests:
             required_model_prop (ModelWithUnionProperty):
 
         Raises:
-            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            errors.UnexpectedStatus: If the server returns a non 2xx status code.
             httpx.TimeoutException: If the request takes longer than Client.timeout.
 
         Returns:
-            Response[Union[Any, HTTPValidationError]]
+            Response[Any]
         """
 
         return defaults_tests_defaults_post.sync(
@@ -620,7 +620,7 @@ class Tests:
         enum_prop: AnEnum,
         model_prop: "ModelWithUnionProperty",
         required_model_prop: "ModelWithUnionProperty",
-    ) -> Optional[Union[Any, HTTPValidationError]]:
+    ) -> Any:
         """Defaults
 
         Args:
@@ -637,11 +637,11 @@ class Tests:
             required_model_prop (ModelWithUnionProperty):
 
         Raises:
-            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            errors.UnexpectedStatus: If the server returns a non 2xx status code.
             httpx.TimeoutException: If the request takes longer than Client.timeout.
 
         Returns:
-            Response[Union[Any, HTTPValidationError]]
+            Response[Any]
         """
 
         return await defaults_tests_defaults_post.asyncio(
@@ -661,11 +661,11 @@ class Tests:
 
     def octet_stream_tests_octet_stream_get(
         self,
-    ) -> Optional[File]:
+    ) -> File:
         """Octet Stream
 
         Raises:
-            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            errors.UnexpectedStatus: If the server returns a non 2xx status code.
             httpx.TimeoutException: If the request takes longer than Client.timeout.
 
         Returns:
@@ -678,11 +678,11 @@ class Tests:
 
     async def octet_stream_tests_octet_stream_get_async(
         self,
-    ) -> Optional[File]:
+    ) -> File:
         """Octet Stream
 
         Raises:
-            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            errors.UnexpectedStatus: If the server returns a non 2xx status code.
             httpx.TimeoutException: If the request takes longer than Client.timeout.
 
         Returns:
@@ -695,11 +695,11 @@ class Tests:
 
     def no_response_tests_no_response_get(
         self,
-    ) -> Optional[Any]:
+    ) -> Any:
         """No Response
 
         Raises:
-            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            errors.UnexpectedStatus: If the server returns a non 2xx status code.
             httpx.TimeoutException: If the request takes longer than Client.timeout.
 
         Returns:
@@ -712,11 +712,11 @@ class Tests:
 
     async def no_response_tests_no_response_get_async(
         self,
-    ) -> Optional[Any]:
+    ) -> Any:
         """No Response
 
         Raises:
-            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            errors.UnexpectedStatus: If the server returns a non 2xx status code.
             httpx.TimeoutException: If the request takes longer than Client.timeout.
 
         Returns:
@@ -729,11 +729,11 @@ class Tests:
 
     def unsupported_content_tests_unsupported_content_get(
         self,
-    ) -> Optional[Any]:
+    ) -> Any:
         """Unsupported Content
 
         Raises:
-            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            errors.UnexpectedStatus: If the server returns a non 2xx status code.
             httpx.TimeoutException: If the request takes longer than Client.timeout.
 
         Returns:
@@ -746,11 +746,11 @@ class Tests:
 
     async def unsupported_content_tests_unsupported_content_get_async(
         self,
-    ) -> Optional[Any]:
+    ) -> Any:
         """Unsupported Content
 
         Raises:
-            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            errors.UnexpectedStatus: If the server returns a non 2xx status code.
             httpx.TimeoutException: If the request takes longer than Client.timeout.
 
         Returns:
@@ -765,18 +765,18 @@ class Tests:
         self,
         *,
         int_enum: AnIntEnum,
-    ) -> Optional[Union[Any, HTTPValidationError]]:
+    ) -> Any:
         """Int Enum
 
         Args:
             int_enum (AnIntEnum): An enumeration.
 
         Raises:
-            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            errors.UnexpectedStatus: If the server returns a non 2xx status code.
             httpx.TimeoutException: If the request takes longer than Client.timeout.
 
         Returns:
-            Response[Union[Any, HTTPValidationError]]
+            Response[Any]
         """
 
         return int_enum_tests_int_enum_post.sync(
@@ -788,18 +788,18 @@ class Tests:
         self,
         *,
         int_enum: AnIntEnum,
-    ) -> Optional[Union[Any, HTTPValidationError]]:
+    ) -> Any:
         """Int Enum
 
         Args:
             int_enum (AnIntEnum): An enumeration.
 
         Raises:
-            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            errors.UnexpectedStatus: If the server returns a non 2xx status code.
             httpx.TimeoutException: If the request takes longer than Client.timeout.
 
         Returns:
-            Response[Union[Any, HTTPValidationError]]
+            Response[Any]
         """
 
         return await int_enum_tests_int_enum_post.asyncio(
@@ -811,14 +811,14 @@ class Tests:
         self,
         *,
         json_body: TestInlineObjectsJsonBody,
-    ) -> Optional[TestInlineObjectsResponse200]:
+    ) -> TestInlineObjectsResponse200:
         """Test Inline Objects
 
         Args:
             json_body (TestInlineObjectsJsonBody):
 
         Raises:
-            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            errors.UnexpectedStatus: If the server returns a non 2xx status code.
             httpx.TimeoutException: If the request takes longer than Client.timeout.
 
         Returns:
@@ -834,14 +834,14 @@ class Tests:
         self,
         *,
         json_body: TestInlineObjectsJsonBody,
-    ) -> Optional[TestInlineObjectsResponse200]:
+    ) -> TestInlineObjectsResponse200:
         """Test Inline Objects
 
         Args:
             json_body (TestInlineObjectsJsonBody):
 
         Raises:
-            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            errors.UnexpectedStatus: If the server returns a non 2xx status code.
             httpx.TimeoutException: If the request takes longer than Client.timeout.
 
         Returns:
@@ -857,7 +857,7 @@ class Tests:
         self,
         *,
         my_token: str,
-    ) -> Optional[Any]:
+    ) -> Any:
         """TOKEN_WITH_COOKIE
 
          Test optional cookie parameters
@@ -866,7 +866,7 @@ class Tests:
             my_token (str):
 
         Raises:
-            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            errors.UnexpectedStatus: If the server returns a non 2xx status code.
             httpx.TimeoutException: If the request takes longer than Client.timeout.
 
         Returns:
@@ -882,7 +882,7 @@ class Tests:
         self,
         *,
         my_token: str,
-    ) -> Optional[Any]:
+    ) -> Any:
         """TOKEN_WITH_COOKIE
 
          Test optional cookie parameters
@@ -891,7 +891,7 @@ class Tests:
             my_token (str):
 
         Raises:
-            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            errors.UnexpectedStatus: If the server returns a non 2xx status code.
             httpx.TimeoutException: If the request takes longer than Client.timeout.
 
         Returns:
@@ -907,7 +907,7 @@ class Tests:
         self,
         *,
         json_body: AModel,
-    ) -> Optional[Union[Any, HTTPValidationError]]:
+    ) -> Any:
         """Path with callback
 
          Try sending a request related to a callback
@@ -916,11 +916,11 @@ class Tests:
             json_body (AModel): A Model for testing all the ways custom objects can be used
 
         Raises:
-            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            errors.UnexpectedStatus: If the server returns a non 2xx status code.
             httpx.TimeoutException: If the request takes longer than Client.timeout.
 
         Returns:
-            Response[Union[Any, HTTPValidationError]]
+            Response[Any]
         """
 
         return callback_test.sync(
@@ -932,7 +932,7 @@ class Tests:
         self,
         *,
         json_body: AModel,
-    ) -> Optional[Union[Any, HTTPValidationError]]:
+    ) -> Any:
         """Path with callback
 
          Try sending a request related to a callback
@@ -941,11 +941,11 @@ class Tests:
             json_body (AModel): A Model for testing all the ways custom objects can be used
 
         Raises:
-            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            errors.UnexpectedStatus: If the server returns a non 2xx status code.
             httpx.TimeoutException: If the request takes longer than Client.timeout.
 
         Returns:
-            Response[Union[Any, HTTPValidationError]]
+            Response[Any]
         """
 
         return await callback_test.asyncio(
@@ -955,13 +955,13 @@ class Tests:
 
     def description_with_backslash(
         self,
-    ) -> Optional[Any]:
+    ) -> Any:
         r""" Test description with \
 
          Test description with \
 
         Raises:
-            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            errors.UnexpectedStatus: If the server returns a non 2xx status code.
             httpx.TimeoutException: If the request takes longer than Client.timeout.
 
         Returns:
@@ -974,13 +974,13 @@ class Tests:
 
     async def description_with_backslash_async(
         self,
-    ) -> Optional[Any]:
+    ) -> Any:
         r""" Test description with \
 
          Test description with \
 
         Raises:
-            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            errors.UnexpectedStatus: If the server returns a non 2xx status code.
             httpx.TimeoutException: If the request takes longer than Client.timeout.
 
         Returns:

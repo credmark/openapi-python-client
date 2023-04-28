@@ -1,5 +1,5 @@
 from http import HTTPStatus
-from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union, cast
+from typing import TYPE_CHECKING, Any, Dict, List, cast
 
 import httpx
 
@@ -36,25 +36,18 @@ def _get_kwargs(*, multipart_data: List[File], client: "MyTestApiClient") -> Dic
     }
 
 
-def _parse_response(
-    *, client: "MyTestApiClient", response: httpx.Response
-) -> Optional[Union[Any, HTTPValidationError]]:
+def _parse_response(*, client: "MyTestApiClient", response: httpx.Response) -> Any:
     if response.status_code == HTTPStatus.OK:
         response_200 = cast(Any, response.json())
         return response_200
     if response.status_code == HTTPStatus.UNPROCESSABLE_ENTITY:
         response_422 = HTTPValidationError.from_dict(response.json())
 
-        return response_422
-    if client.raise_on_unexpected_status:
-        raise errors.UnexpectedStatus(response.status_code, response.content)
-    else:
-        return None
+        raise errors.UnexpectedStatus(response.status_code, response.content, response_422)
+    raise errors.UnexpectedStatus(response.status_code, response.content)
 
 
-def _build_response(
-    *, client: "MyTestApiClient", response: httpx.Response
-) -> Response[Union[Any, HTTPValidationError]]:
+def _build_response(*, client: "MyTestApiClient", response: httpx.Response) -> Response[Any]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -63,9 +56,7 @@ def _build_response(
     )
 
 
-def sync_detailed(
-    *, multipart_data: List[File], client: "MyTestApiClient"
-) -> Response[Union[Any, HTTPValidationError]]:
+def sync_detailed(*, multipart_data: List[File], client: "MyTestApiClient") -> Response[Any]:
     """Upload multiple files
 
      Upload several files in the same request
@@ -74,11 +65,11 @@ def sync_detailed(
         multipart_data (List[File]):
 
     Raises:
-        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        errors.UnexpectedStatus: If the server returns a non 2xx status code.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, HTTPValidationError]]
+        Response[Any]
     """
 
     kwargs = _get_kwargs(
@@ -94,7 +85,7 @@ def sync_detailed(
     return _build_response(client=client, response=response)
 
 
-def sync(*, multipart_data: List[File], client: "MyTestApiClient") -> Optional[Union[Any, HTTPValidationError]]:
+def sync(*, multipart_data: List[File], client: "MyTestApiClient") -> Any:
     """Upload multiple files
 
      Upload several files in the same request
@@ -103,11 +94,11 @@ def sync(*, multipart_data: List[File], client: "MyTestApiClient") -> Optional[U
         multipart_data (List[File]):
 
     Raises:
-        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        errors.UnexpectedStatus: If the server returns a non 2xx status code.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, HTTPValidationError]]
+        Response[Any]
     """
 
     return sync_detailed(
@@ -116,9 +107,7 @@ def sync(*, multipart_data: List[File], client: "MyTestApiClient") -> Optional[U
     ).parsed
 
 
-async def asyncio_detailed(
-    *, multipart_data: List[File], client: "MyTestApiClient"
-) -> Response[Union[Any, HTTPValidationError]]:
+async def asyncio_detailed(*, multipart_data: List[File], client: "MyTestApiClient") -> Response[Any]:
     """Upload multiple files
 
      Upload several files in the same request
@@ -127,11 +116,11 @@ async def asyncio_detailed(
         multipart_data (List[File]):
 
     Raises:
-        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        errors.UnexpectedStatus: If the server returns a non 2xx status code.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, HTTPValidationError]]
+        Response[Any]
     """
 
     kwargs = _get_kwargs(
@@ -145,9 +134,7 @@ async def asyncio_detailed(
     return _build_response(client=client, response=response)
 
 
-async def asyncio(
-    *, multipart_data: List[File], client: "MyTestApiClient"
-) -> Optional[Union[Any, HTTPValidationError]]:
+async def asyncio(*, multipart_data: List[File], client: "MyTestApiClient") -> Any:
     """Upload multiple files
 
      Upload several files in the same request
@@ -156,11 +143,11 @@ async def asyncio(
         multipart_data (List[File]):
 
     Raises:
-        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        errors.UnexpectedStatus: If the server returns a non 2xx status code.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, HTTPValidationError]]
+        Response[Any]
     """
 
     return (

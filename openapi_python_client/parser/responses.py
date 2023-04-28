@@ -20,6 +20,9 @@ class Response:
     prop: Property
     source: str
 
+    @property
+    def is_success(self):
+        return self.status_code >= 200 and self.status_code <= 299
 
 def _source_by_content_type(content_type: str) -> Optional[str]:
     known_content_types = {

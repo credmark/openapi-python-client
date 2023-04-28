@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Any, Optional
+from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
     from ...client import MyTestApiClient
@@ -14,13 +14,13 @@ class True_:
         self,
         *,
         import_: str,
-    ) -> Optional[Any]:
+    ) -> Any:
         """
         Args:
             import_ (str):
 
         Raises:
-            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            errors.UnexpectedStatus: If the server returns a non 2xx status code.
             httpx.TimeoutException: If the request takes longer than Client.timeout.
 
         Returns:
@@ -36,13 +36,13 @@ class True_:
         self,
         *,
         import_: str,
-    ) -> Optional[Any]:
+    ) -> Any:
         """
         Args:
             import_ (str):
 
         Raises:
-            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            errors.UnexpectedStatus: If the server returns a non 2xx status code.
             httpx.TimeoutException: If the request takes longer than Client.timeout.
 
         Returns:

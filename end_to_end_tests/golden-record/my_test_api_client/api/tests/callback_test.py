@@ -1,5 +1,5 @@
 from http import HTTPStatus
-from typing import TYPE_CHECKING, Any, Dict, Optional, Union, cast
+from typing import TYPE_CHECKING, Any, Dict, cast
 
 import httpx
 
@@ -33,25 +33,18 @@ def _get_kwargs(*, json_body: AModel, client: "MyTestApiClient") -> Dict[str, An
     }
 
 
-def _parse_response(
-    *, client: "MyTestApiClient", response: httpx.Response
-) -> Optional[Union[Any, HTTPValidationError]]:
+def _parse_response(*, client: "MyTestApiClient", response: httpx.Response) -> Any:
     if response.status_code == HTTPStatus.OK:
         response_200 = cast(Any, response.json())
         return response_200
     if response.status_code == HTTPStatus.UNPROCESSABLE_ENTITY:
         response_422 = HTTPValidationError.from_dict(response.json())
 
-        return response_422
-    if client.raise_on_unexpected_status:
-        raise errors.UnexpectedStatus(response.status_code, response.content)
-    else:
-        return None
+        raise errors.UnexpectedStatus(response.status_code, response.content, response_422)
+    raise errors.UnexpectedStatus(response.status_code, response.content)
 
 
-def _build_response(
-    *, client: "MyTestApiClient", response: httpx.Response
-) -> Response[Union[Any, HTTPValidationError]]:
+def _build_response(*, client: "MyTestApiClient", response: httpx.Response) -> Response[Any]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -60,7 +53,7 @@ def _build_response(
     )
 
 
-def sync_detailed(*, json_body: AModel, client: "MyTestApiClient") -> Response[Union[Any, HTTPValidationError]]:
+def sync_detailed(*, json_body: AModel, client: "MyTestApiClient") -> Response[Any]:
     """Path with callback
 
      Try sending a request related to a callback
@@ -69,11 +62,11 @@ def sync_detailed(*, json_body: AModel, client: "MyTestApiClient") -> Response[U
         json_body (AModel): A Model for testing all the ways custom objects can be used
 
     Raises:
-        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        errors.UnexpectedStatus: If the server returns a non 2xx status code.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, HTTPValidationError]]
+        Response[Any]
     """
 
     kwargs = _get_kwargs(
@@ -89,7 +82,7 @@ def sync_detailed(*, json_body: AModel, client: "MyTestApiClient") -> Response[U
     return _build_response(client=client, response=response)
 
 
-def sync(*, json_body: AModel, client: "MyTestApiClient") -> Optional[Union[Any, HTTPValidationError]]:
+def sync(*, json_body: AModel, client: "MyTestApiClient") -> Any:
     """Path with callback
 
      Try sending a request related to a callback
@@ -98,11 +91,11 @@ def sync(*, json_body: AModel, client: "MyTestApiClient") -> Optional[Union[Any,
         json_body (AModel): A Model for testing all the ways custom objects can be used
 
     Raises:
-        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        errors.UnexpectedStatus: If the server returns a non 2xx status code.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, HTTPValidationError]]
+        Response[Any]
     """
 
     return sync_detailed(
@@ -111,9 +104,7 @@ def sync(*, json_body: AModel, client: "MyTestApiClient") -> Optional[Union[Any,
     ).parsed
 
 
-async def asyncio_detailed(
-    *, json_body: AModel, client: "MyTestApiClient"
-) -> Response[Union[Any, HTTPValidationError]]:
+async def asyncio_detailed(*, json_body: AModel, client: "MyTestApiClient") -> Response[Any]:
     """Path with callback
 
      Try sending a request related to a callback
@@ -122,11 +113,11 @@ async def asyncio_detailed(
         json_body (AModel): A Model for testing all the ways custom objects can be used
 
     Raises:
-        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        errors.UnexpectedStatus: If the server returns a non 2xx status code.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, HTTPValidationError]]
+        Response[Any]
     """
 
     kwargs = _get_kwargs(
@@ -140,7 +131,7 @@ async def asyncio_detailed(
     return _build_response(client=client, response=response)
 
 
-async def asyncio(*, json_body: AModel, client: "MyTestApiClient") -> Optional[Union[Any, HTTPValidationError]]:
+async def asyncio(*, json_body: AModel, client: "MyTestApiClient") -> Any:
     """Path with callback
 
      Try sending a request related to a callback
@@ -149,11 +140,11 @@ async def asyncio(*, json_body: AModel, client: "MyTestApiClient") -> Optional[U
         json_body (AModel): A Model for testing all the ways custom objects can be used
 
     Raises:
-        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        errors.UnexpectedStatus: If the server returns a non 2xx status code.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[Any, HTTPValidationError]]
+        Response[Any]
     """
 
     return (

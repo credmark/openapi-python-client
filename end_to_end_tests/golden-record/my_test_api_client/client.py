@@ -24,7 +24,7 @@ class MyTestApiClient:
             but can be set to False for testing purposes.
         raise_on_unexpected_status: Whether or not to raise an errors.UnexpectedStatus if the API returns a
             status code that was not documented in the source OpenAPI document.
-        follow_redirects: Whether or not to follow redirects. Default value is False.
+        follow_redirects: Whether or not to follow redirects. Default value is True.
     """
 
     def __init__(
@@ -34,8 +34,7 @@ class MyTestApiClient:
         headers: Union[Dict[str, str], None] = None,
         timeout: float = 5.0,
         verify_ssl: Union[str, bool, ssl.SSLContext] = True,
-        raise_on_unexpected_status: bool = False,
-        follow_redirects: bool = False,
+        follow_redirects: bool = True,
         token: Union[str, None] = None,
         prefix: str = "Bearer",
         auth_header_name: str = "Authorization",
@@ -48,7 +47,6 @@ class MyTestApiClient:
         self.headers = headers
         self.timeout = timeout
         self.verify_ssl = verify_ssl
-        self.raise_on_unexpected_status = raise_on_unexpected_status
         self.follow_redirects = follow_redirects
         self.token = token
         self.prefix = prefix

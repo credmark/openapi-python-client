@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Any, Optional
+from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
     from ...client import MyTestApiClient
@@ -12,10 +12,10 @@ class Tag1:
 
     def get_tag_with_number(
         self,
-    ) -> Optional[Any]:
+    ) -> Any:
         """
         Raises:
-            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            errors.UnexpectedStatus: If the server returns a non 2xx status code.
             httpx.TimeoutException: If the request takes longer than Client.timeout.
 
         Returns:
@@ -28,10 +28,10 @@ class Tag1:
 
     async def get_tag_with_number_async(
         self,
-    ) -> Optional[Any]:
+    ) -> Any:
         """
         Raises:
-            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            errors.UnexpectedStatus: If the server returns a non 2xx status code.
             httpx.TimeoutException: If the request takes longer than Client.timeout.
 
         Returns:

@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Any, Optional
+from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
     from ...client import MyTestApiClient
@@ -21,7 +21,7 @@ class ParameterReferences:
         integer_param: Union[Unset, None, int] = 0,
         header_param: Union[Unset, str] = UNSET,
         cookie_param: Union[Unset, str] = UNSET,
-    ) -> Optional[Any]:
+    ) -> Any:
         """Test different types of parameter references
 
         Args:
@@ -32,7 +32,7 @@ class ParameterReferences:
             cookie_param (Union[Unset, str]):
 
         Raises:
-            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            errors.UnexpectedStatus: If the server returns a non 2xx status code.
             httpx.TimeoutException: If the request takes longer than Client.timeout.
 
         Returns:
@@ -56,7 +56,7 @@ class ParameterReferences:
         integer_param: Union[Unset, None, int] = 0,
         header_param: Union[Unset, str] = UNSET,
         cookie_param: Union[Unset, str] = UNSET,
-    ) -> Optional[Any]:
+    ) -> Any:
         """Test different types of parameter references
 
         Args:
@@ -67,7 +67,7 @@ class ParameterReferences:
             cookie_param (Union[Unset, str]):
 
         Raises:
-            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            errors.UnexpectedStatus: If the server returns a non 2xx status code.
             httpx.TimeoutException: If the request takes longer than Client.timeout.
 
         Returns:

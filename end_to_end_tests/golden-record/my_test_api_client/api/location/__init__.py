@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Any, Optional
+from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
     from ...client import MyTestApiClient
@@ -25,7 +25,7 @@ class Location:
         null_required: Union[Unset, None, datetime.datetime] = UNSET,
         null_not_required: Union[Unset, None, datetime.datetime] = UNSET,
         not_null_not_required: Union[Unset, None, datetime.datetime] = UNSET,
-    ) -> Optional[Any]:
+    ) -> Any:
         """
         Args:
             not_null_required (datetime.datetime):
@@ -34,7 +34,7 @@ class Location:
             not_null_not_required (Union[Unset, None, datetime.datetime]):
 
         Raises:
-            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            errors.UnexpectedStatus: If the server returns a non 2xx status code.
             httpx.TimeoutException: If the request takes longer than Client.timeout.
 
         Returns:
@@ -56,7 +56,7 @@ class Location:
         null_required: Union[Unset, None, datetime.datetime] = UNSET,
         null_not_required: Union[Unset, None, datetime.datetime] = UNSET,
         not_null_not_required: Union[Unset, None, datetime.datetime] = UNSET,
-    ) -> Optional[Any]:
+    ) -> Any:
         """
         Args:
             not_null_required (datetime.datetime):
@@ -65,7 +65,7 @@ class Location:
             not_null_not_required (Union[Unset, None, datetime.datetime]):
 
         Raises:
-            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            errors.UnexpectedStatus: If the server returns a non 2xx status code.
             httpx.TimeoutException: If the request takes longer than Client.timeout.
 
         Returns:
@@ -89,7 +89,7 @@ class Location:
         integer_header: Union[Unset, int] = UNSET,
         int_enum_header: Union[Unset, GetLocationHeaderTypesIntEnumHeader] = UNSET,
         string_enum_header: Union[Unset, GetLocationHeaderTypesStringEnumHeader] = UNSET,
-    ) -> Optional[Any]:
+    ) -> Any:
         """
         Args:
             boolean_header (Union[Unset, bool]):
@@ -100,7 +100,7 @@ class Location:
             string_enum_header (Union[Unset, GetLocationHeaderTypesStringEnumHeader]):
 
         Raises:
-            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            errors.UnexpectedStatus: If the server returns a non 2xx status code.
             httpx.TimeoutException: If the request takes longer than Client.timeout.
 
         Returns:
@@ -126,7 +126,7 @@ class Location:
         integer_header: Union[Unset, int] = UNSET,
         int_enum_header: Union[Unset, GetLocationHeaderTypesIntEnumHeader] = UNSET,
         string_enum_header: Union[Unset, GetLocationHeaderTypesStringEnumHeader] = UNSET,
-    ) -> Optional[Any]:
+    ) -> Any:
         """
         Args:
             boolean_header (Union[Unset, bool]):
@@ -137,7 +137,7 @@ class Location:
             string_enum_header (Union[Unset, GetLocationHeaderTypesStringEnumHeader]):
 
         Raises:
-            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            errors.UnexpectedStatus: If the server returns a non 2xx status code.
             httpx.TimeoutException: If the request takes longer than Client.timeout.
 
         Returns:

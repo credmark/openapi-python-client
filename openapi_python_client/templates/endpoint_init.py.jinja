@@ -1,4 +1,4 @@
-from typing import Any, Optional, TYPE_CHECKING
+from typing import Any, TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ...client import {{ client_name }}
@@ -28,7 +28,7 @@ class {{ endpoint_collection.tag.class_name }}:
     def {{ mod }}(
         self,
         {{ arguments(endpoint) | indent(4) }}
-    ) -> Optional[{{ return_string }}]:
+    ) -> {{ return_string }}:
         {{ docstring(endpoint, return_string) | indent(8) }}
         return {{ mod }}.sync(
             client=self.__client,
@@ -38,7 +38,7 @@ class {{ endpoint_collection.tag.class_name }}:
     async def {{ mod }}_async(
         self,
         {{ arguments(endpoint) | indent(4) }}
-    ) -> Optional[{{ return_string }}]:
+    ) -> {{ return_string }}:
         {{ docstring(endpoint, return_string) | indent(8) }}
         return await {{ mod }}.asyncio(
             client=self.__client,

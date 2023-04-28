@@ -1,12 +1,12 @@
 from http import HTTPStatus
-from typing import TYPE_CHECKING, Any, Dict, Optional
+from typing import TYPE_CHECKING, Any, Dict, cast
 
 import httpx
 
 if TYPE_CHECKING:
     from ...client import MyTestApiClient
 
-from typing import Dict
+from typing import Dict, cast
 
 from ... import errors
 from ...models.post_form_data_inline_data import PostFormDataInlineData
@@ -30,13 +30,11 @@ def _get_kwargs(*, form_data: PostFormDataInlineData, client: "MyTestApiClient")
     }
 
 
-def _parse_response(*, client: "MyTestApiClient", response: httpx.Response) -> Optional[Any]:
+def _parse_response(*, client: "MyTestApiClient", response: httpx.Response) -> Any:
     if response.status_code == HTTPStatus.OK:
-        return None
-    if client.raise_on_unexpected_status:
-        raise errors.UnexpectedStatus(response.status_code, response.content)
-    else:
-        return None
+        response_200 = cast(Any, response.json())
+        return response_200
+    raise errors.UnexpectedStatus(response.status_code, response.content)
 
 
 def _build_response(*, client: "MyTestApiClient", response: httpx.Response) -> Response[Any]:
@@ -54,7 +52,7 @@ def sync_detailed(*, form_data: PostFormDataInlineData, client: "MyTestApiClient
      Post form data (inline schema)
 
     Raises:
-        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        errors.UnexpectedStatus: If the server returns a non 2xx status code.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
@@ -74,13 +72,13 @@ def sync_detailed(*, form_data: PostFormDataInlineData, client: "MyTestApiClient
     return _build_response(client=client, response=response)
 
 
-def sync(*, form_data: PostFormDataInlineData, client: "MyTestApiClient") -> Optional[Any]:
+def sync(*, form_data: PostFormDataInlineData, client: "MyTestApiClient") -> Any:
     """Post form data (inline schema)
 
      Post form data (inline schema)
 
     Raises:
-        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        errors.UnexpectedStatus: If the server returns a non 2xx status code.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
@@ -99,7 +97,7 @@ async def asyncio_detailed(*, form_data: PostFormDataInlineData, client: "MyTest
      Post form data (inline schema)
 
     Raises:
-        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        errors.UnexpectedStatus: If the server returns a non 2xx status code.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
@@ -117,13 +115,13 @@ async def asyncio_detailed(*, form_data: PostFormDataInlineData, client: "MyTest
     return _build_response(client=client, response=response)
 
 
-async def asyncio(*, form_data: PostFormDataInlineData, client: "MyTestApiClient") -> Optional[Any]:
+async def asyncio(*, form_data: PostFormDataInlineData, client: "MyTestApiClient") -> Any:
     """Post form data (inline schema)
 
      Post form data (inline schema)
 
     Raises:
-        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        errors.UnexpectedStatus: If the server returns a non 2xx status code.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:

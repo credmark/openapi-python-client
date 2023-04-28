@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Any, Optional
+from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
     from ...client import MyTestApiClient
@@ -17,13 +17,13 @@ class Default:
         self,
         *,
         common: Union[Unset, None, str] = UNSET,
-    ) -> Optional[Any]:
+    ) -> Any:
         """
         Args:
             common (Union[Unset, None, str]):
 
         Raises:
-            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            errors.UnexpectedStatus: If the server returns a non 2xx status code.
             httpx.TimeoutException: If the request takes longer than Client.timeout.
 
         Returns:
@@ -39,13 +39,13 @@ class Default:
         self,
         *,
         common: Union[Unset, None, str] = UNSET,
-    ) -> Optional[Any]:
+    ) -> Any:
         """
         Args:
             common (Union[Unset, None, str]):
 
         Raises:
-            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            errors.UnexpectedStatus: If the server returns a non 2xx status code.
             httpx.TimeoutException: If the request takes longer than Client.timeout.
 
         Returns:
@@ -61,13 +61,13 @@ class Default:
         self,
         *,
         common: Union[Unset, None, str] = UNSET,
-    ) -> Optional[Any]:
+    ) -> Any:
         """
         Args:
             common (Union[Unset, None, str]):
 
         Raises:
-            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            errors.UnexpectedStatus: If the server returns a non 2xx status code.
             httpx.TimeoutException: If the request takes longer than Client.timeout.
 
         Returns:
@@ -83,13 +83,13 @@ class Default:
         self,
         *,
         common: Union[Unset, None, str] = UNSET,
-    ) -> Optional[Any]:
+    ) -> Any:
         """
         Args:
             common (Union[Unset, None, str]):
 
         Raises:
-            errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+            errors.UnexpectedStatus: If the server returns a non 2xx status code.
             httpx.TimeoutException: If the request takes longer than Client.timeout.
 
         Returns:

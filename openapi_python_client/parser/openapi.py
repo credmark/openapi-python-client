@@ -514,8 +514,9 @@ class Endpoint:
         return result, schemas, parameters
 
     def response_type(self) -> str:
-        """Get the Python type of any response from this endpoint"""
-        types = sorted({response.prop.get_type_string(quoted=False) for response in self.responses})
+        """Get the Python type of success responses from this endpoint"""
+        success_responses = [response for response in self.responses if response.is_success]
+        types = sorted({response.prop.get_type_string(quoted=False) for response in success_responses })
         if len(types) == 0:
             return "Any"
         if len(types) == 1:

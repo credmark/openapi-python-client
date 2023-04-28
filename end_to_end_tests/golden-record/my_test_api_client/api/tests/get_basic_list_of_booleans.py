@@ -1,5 +1,5 @@
 from http import HTTPStatus
-from typing import TYPE_CHECKING, Any, Dict, List, Optional, cast
+from typing import TYPE_CHECKING, Any, Dict, List, cast
 
 import httpx
 
@@ -28,15 +28,12 @@ def _get_kwargs(client: "MyTestApiClient") -> Dict[str, Any]:
     }
 
 
-def _parse_response(*, client: "MyTestApiClient", response: httpx.Response) -> Optional[List[bool]]:
+def _parse_response(*, client: "MyTestApiClient", response: httpx.Response) -> List[bool]:
     if response.status_code == HTTPStatus.OK:
         response_200 = cast(List[bool], response.json())
 
         return response_200
-    if client.raise_on_unexpected_status:
-        raise errors.UnexpectedStatus(response.status_code, response.content)
-    else:
-        return None
+    raise errors.UnexpectedStatus(response.status_code, response.content)
 
 
 def _build_response(*, client: "MyTestApiClient", response: httpx.Response) -> Response[List[bool]]:
@@ -54,7 +51,7 @@ def sync_detailed(client: "MyTestApiClient") -> Response[List[bool]]:
      Get a list of booleans
 
     Raises:
-        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        errors.UnexpectedStatus: If the server returns a non 2xx status code.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
@@ -73,13 +70,13 @@ def sync_detailed(client: "MyTestApiClient") -> Response[List[bool]]:
     return _build_response(client=client, response=response)
 
 
-def sync(client: "MyTestApiClient") -> Optional[List[bool]]:
+def sync(client: "MyTestApiClient") -> List[bool]:
     """Get Basic List Of Booleans
 
      Get a list of booleans
 
     Raises:
-        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        errors.UnexpectedStatus: If the server returns a non 2xx status code.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
@@ -97,7 +94,7 @@ async def asyncio_detailed(client: "MyTestApiClient") -> Response[List[bool]]:
      Get a list of booleans
 
     Raises:
-        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        errors.UnexpectedStatus: If the server returns a non 2xx status code.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
@@ -114,13 +111,13 @@ async def asyncio_detailed(client: "MyTestApiClient") -> Response[List[bool]]:
     return _build_response(client=client, response=response)
 
 
-async def asyncio(client: "MyTestApiClient") -> Optional[List[bool]]:
+async def asyncio(client: "MyTestApiClient") -> List[bool]:
     """Get Basic List Of Booleans
 
      Get a list of booleans
 
     Raises:
-        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        errors.UnexpectedStatus: If the server returns a non 2xx status code.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:

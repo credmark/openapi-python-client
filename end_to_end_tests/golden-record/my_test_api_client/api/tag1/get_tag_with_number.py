@@ -1,5 +1,5 @@
 from http import HTTPStatus
-from typing import TYPE_CHECKING, Any, Dict, Optional
+from typing import TYPE_CHECKING, Any, Dict
 
 import httpx
 
@@ -26,13 +26,11 @@ def _get_kwargs(client: "MyTestApiClient") -> Dict[str, Any]:
     }
 
 
-def _parse_response(*, client: "MyTestApiClient", response: httpx.Response) -> Optional[Any]:
+def _parse_response(*, client: "MyTestApiClient", response: httpx.Response) -> Any:
     if response.status_code == HTTPStatus.OK:
-        return None
-    if client.raise_on_unexpected_status:
-        raise errors.UnexpectedStatus(response.status_code, response.content)
-    else:
-        return None
+        response_200 = None
+        return response_200
+    raise errors.UnexpectedStatus(response.status_code, response.content)
 
 
 def _build_response(*, client: "MyTestApiClient", response: httpx.Response) -> Response[Any]:
@@ -47,7 +45,7 @@ def _build_response(*, client: "MyTestApiClient", response: httpx.Response) -> R
 def sync_detailed(client: "MyTestApiClient") -> Response[Any]:
     """
     Raises:
-        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        errors.UnexpectedStatus: If the server returns a non 2xx status code.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
@@ -66,10 +64,10 @@ def sync_detailed(client: "MyTestApiClient") -> Response[Any]:
     return _build_response(client=client, response=response)
 
 
-def sync(client: "MyTestApiClient") -> Optional[Any]:
+def sync(client: "MyTestApiClient") -> Any:
     """
     Raises:
-        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        errors.UnexpectedStatus: If the server returns a non 2xx status code.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
@@ -84,7 +82,7 @@ def sync(client: "MyTestApiClient") -> Optional[Any]:
 async def asyncio_detailed(client: "MyTestApiClient") -> Response[Any]:
     """
     Raises:
-        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        errors.UnexpectedStatus: If the server returns a non 2xx status code.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
@@ -101,10 +99,10 @@ async def asyncio_detailed(client: "MyTestApiClient") -> Response[Any]:
     return _build_response(client=client, response=response)
 
 
-async def asyncio(client: "MyTestApiClient") -> Optional[Any]:
+async def asyncio(client: "MyTestApiClient") -> Any:
     """
     Raises:
-        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        errors.UnexpectedStatus: If the server returns a non 2xx status code.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
